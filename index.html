@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventaire GN - Gestionnaire</title>
+    <!-- Vue.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.prod.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Inventaire GN</h1>
+        </header>
+        
+        <div class="container">
+            <div class="progress-container">
+                <div>Progression de l'inventaire</div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" :style="{ width: `${overallProgress}%` }">{{ overallProgress }}%</div>
+                </div>
+            </div>
+            
+            <div class="export-import">
+                <button class="export-btn" @click="exportData">Exporter les données</button>
+                <label class="import-btn">
+                    Importer les données
+                    <input type="file" class="import-input" @change="importData" accept=".json">
+                </label>
+            </div>
+            
+            <div v-if="isLoading" class="loader">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            
+            <div v-else v-for="(section, sectionKey) in inventory" :key="sectionKey" class="section">
+                <div class="section-header" @click="toggleSection(sectionKey)">
+                    <h2>{{ section.title }}</h2>
+                    <span class="section-progress">{{ getSectionProgress(sectionKey) }}</span>
+                </div>
+                
+                <div :class="['section-content', { open: openSections.includes(sectionKey) }]">
+                    <div v-for="(subsection, subsectionKey) in section.subsections" :key="`${sectionKey}-${subsectionKey}`" class="subsection">
+                        <div class="subsection-title">{{ subsection.title }}</div>
+                        
+                        <div v-for="(item, itemIndex) in subsection.items" :key="`${sectionKey}-${subsectionKey}-${itemIndex}`" class="item">
+                            <div class="item-name">
+                                {{ item.isBox ? '📦 ' : '' }}{{ item.name }}
+                                <span v-if="item.targetQuantity" class="item-target-quantity">
+                                    ({{ item.targetQuantity }}{{ item.isMinimumQuantity ? '+' : '' }})
+                                </span>
+                            </div>
+                            
+                            <!-- Quantity inputs -->
+                            <div v-if="item.targetQuantity || item.variableQuantity" class="item-quantity-container">
+                                <label v-if="item.targetQuantity">Quantité:</label>
+                                <label v-else>Nombre:</label>
+                                <input 
+                                    type="number" 
+                                    class="quantity-input"
+                                    v-model="item.currentQuantity" 
+                                    min="0" 
+                                    :class="{ 
+                                        'quantity-ok': item.targetQuantity && item.currentQuantity >= item.targetQuantity,
+                                        'quantity-low': item.targetQuantity && item.currentQuantity !== null && item.currentQuantity < item.targetQuantity
+                                    }"
+                                    @change="saveInventoryData()"
+                                />
+                            </div>
+                            
+                            <div class="item-actions">
+                                <div class="status-dropdown">
+                                    <div 
+                                        :class="['item-status', getStatusClass(item.status)]" 
+                                        @click="toggleStatusOptions(sectionKey, subsectionKey, itemIndex)">
+                                        {{ getStatusLabel(item.status) }}
+                                    </div>
+                                    <div :class="['status-options', { active: activeStatusDropdown.section === sectionKey && activeStatusDropdown.subsection === subsectionKey && activeStatusDropdown.item === itemIndex }]">
+                                        <div 
+                                            v-for="option in statusOptions" 
+                                            :key="option.value" 
+                                            class="status-option"
+                                            @click="updateItemStatus(sectionKey, subsectionKey, itemIndex, option.value)">
+                                            {{ option.label }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="note-icon" @click="openNoteModal(sectionKey, subsectionKey, itemIndex)">📝</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div :class="['note-modal', { active: noteModalActive }]" @click="closeNoteModal">
+            <div class="modal-content" @click.stop>
+                <div class="modal-header">
+                    <h3>Ajouter une note</h3>
+                    <span class="close" @click="closeNoteModal">&times;</span>
+                </div>
+                <textarea v-model="currentNote" placeholder="Écrire une note..."></textarea>
+                <button class="save-btn" @click="saveNote">Enregistrer</button>
+            </div>
+        </div>
+        
+        <div :class="['celebration', { active: celebrationActive }]">
+            <h2>Section complétée !</h2>
+            <p>Vous avez vérifié tous les éléments de cette section.</p>
+            <button class="celebration-btn" @click="closeCelebration">Continuer</button>
+        </div>
+        
+        <div :class="['toast-notification', { active: toastActive }]">
+            {{ toastMessage }}
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
