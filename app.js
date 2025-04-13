@@ -117,6 +117,24 @@ const app = createApp({
             checkSectionCompletion(sectionKey);
         };
         
+        // Méthode rapide pour marquer comme "présent"
+        const markAsPresent = (sectionKey, subsectionKey, itemIndex) => {
+            inventory.value[sectionKey].subsections[subsectionKey].items[itemIndex].status = "present";
+            saveInventoryData();
+            
+            // Check if section is complete
+            checkSectionCompletion(sectionKey);
+            
+            // Feedback visuel temporaire
+            const item = document.querySelector(`[data-item-id="${sectionKey}-${subsectionKey}-${itemIndex}"]`);
+            if (item) {
+                item.classList.add('flash-success');
+                setTimeout(() => {
+                    item.classList.remove('flash-success');
+                }, 500);
+            }
+        };
+        
         const openNoteModal = (section, subsection, item) => {
             currentItem.value = { section, subsection, item };
             currentNote.value = inventory.value[section].subsections[subsection].items[item].note || '';
@@ -319,6 +337,7 @@ const app = createApp({
             getStatusLabel,
             getStatusClass,
             updateItemStatus,
+            markAsPresent,  // Ajout de la nouvelle méthode
             openNoteModal,
             closeNoteModal,
             saveNote,

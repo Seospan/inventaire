@@ -46,7 +46,7 @@
                     <div v-for="(subsection, subsectionKey) in section.subsections" :key="`${sectionKey}-${subsectionKey}`" class="subsection">
                         <div class="subsection-title">{{ subsection.title }}</div>
                         
-                        <div v-for="(item, itemIndex) in subsection.items" :key="`${sectionKey}-${subsectionKey}-${itemIndex}`" class="item">
+                        <div v-for="(item, itemIndex) in subsection.items" :key="`${sectionKey}-${subsectionKey}-${itemIndex}`" class="item" :data-item-id="`${sectionKey}-${subsectionKey}-${itemIndex}`">
                             <div class="item-name">
                                 {{ item.isBox ? '📦 ' : '' }}{{ item.name }}
                                 <span v-if="item.targetQuantity" class="item-target-quantity">
@@ -72,6 +72,15 @@
                             </div>
                             
                             <div class="item-actions">
+                                <!-- Bouton OK rapide -->
+                                <button 
+                                    class="quick-ok-btn" 
+                                    @click="markAsPresent(sectionKey, subsectionKey, itemIndex)"
+                                    :class="{ 'selected': item.status === 'present' }"
+                                >
+                                    OK
+                                </button>
+                                
                                 <div class="status-dropdown">
                                     <div 
                                         :class="['item-status', getStatusClass(item.status)]" 
