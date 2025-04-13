@@ -1,481 +1,442 @@
-// Méthode pour définir le filtre actuel
-const setFilter = (filter) => {
-    currentFilter.value = filter;
-};
-
-// Méthode pour obtenir les éléments filtrés
-const getFilteredItems = () => {
-    const filteredItems = [];
-    
-    Object.keys(inventory.value).forEach(sectionKey => {
-        const section = inventory.value[sectionKey];
-        
-        Object.keys(section.subsections).forEach(subsectionKey => {
-            const subsection = section.subsections[subsectionKey];
-            
-            subsection.items.forEach(item => {
-                if (item.status === currentFilter.value) {
-                    // Créer une copie de l'item avec des infos de section
-                    filteredItems.push({
-                        ...item,
-                        sectionKey,
-                        subsectionKey,
-                        sectionTitle: section.title,
-                        subsectionTitle: subsection.title
-                    });
-                }
-            });
-        });
-    });
-    
-    return filteredItems;
-};
-
-// Méthode pour marquer un élément dans la vue filtrée
-const markItemInFilteredView = (item, status) => {
-    inventory.value[item.sectionKey].subsections[item.subsectionKey].items.forEach(originalItem => {
-        if (originalItem.name === item.name) {
-            originalItem.status = status;
-        }
-    });
-    
-    saveInventoryData();
-    showToast(`Élément marqué comme "${getStatusLabel(status)}"`);
-};
-
-// Méthode pour ouvrir la modal de statut pour un élément filtré
-const openStatusModalForFilteredItem = (item) => {
-    currentFilteredItem.value = item;
-    // Ici, vous pourriez implémenter une modal pour changer le statut
-    // Pour l'instant, utilisez une solution simple
-    const newStatus = prompt(
-        `Choisir un nouveau statut pour "${item.name}" :\n1. Présent\n2. À trouver\n3. À réparer\n4. À acheter\n5. Pas besoin\n6. Dans le camion`,
-        "1"
-    );
-    
-    if (newStatus) {
-        let status;
-        switch(newStatus) {
-            case "1": status = "present"; break;
-            case "2": status = "to-find"; break;
-            case "3": status = "to-repair"; break;
-            case "4": status = "to-buy"; break;
-            case "5": status = "not-needed"; break;
-            case "6": status = "in-truck"; break;
-            default: return;
-        }
-        
-        markItemInFilteredView(item, status);
-    }
-};// Get Vue components
-const { createApp, ref, computed, onMounted, watch } = Vue;
-
-// Status options
-const statusOptions = [
-{ value: "present", label: "Présent", className: "status-present" },
-{ value: "to-find", label: "À trouver", className: "status-to-find" },
-{ value: "to-repair", label: "À réparer", className: "status-to-repair" },
-{ value: "to-buy", label: "À acheter", className: "status-to-buy" },
-{ value: "not-needed", label: "Pas besoin", className: "status-not-needed" },
-{ value: "in-truck", label: "Dans le camion", className: "status-in-truck" }
-];
-
 // Create the Vue app
-const app = createApp({
-setup() {
-// State
-const inventory = ref({});
-const isLoading = ref(true);
-const openSections = ref([]);
-const activeStatusDropdown = ref({ section: null, subsection: null, item: null });
-const noteModalActive = ref(false);
-const currentNote = ref('');
-const currentItem = ref({ section: null, subsection: null, item: null });
-const celebrationActive = ref(false);
-const toastActive = ref(false);
-const toastMessage = ref('');
-const currentFilter = ref('all'); // Valeur par défaut : afficher tout
-const currentFilteredItem = ref(null); // Pour stocker l'élément actuellement modifié en vue filtrée
-
-
-// Computed
-const overallProgress = computed(() => {
-    let totalItems = 0;
-    let presentItems = 0;
+const app = Vue.createApp({
+    data() {
+        return {
+            inventory: {},
+            isLoading: true,
+            openSections: [],
+            activeStatusDropdown: { section: null, subsection: null, item: null },
+            noteModalActive: false,
+            currentNote: '',
+            currentItem: { section: null, subsection: null, item: null },
+            celebrationActive: false,
+            toastActive: false,
+            toastMessage: '',
+            currentFilter: 'all', // Valeur par défaut : afficher tout
+            currentFilteredItem: null, // Pour stocker l'élément actuellement modifié en vue filtrée
+            statusOptions: [
+                { value: "present", label: "Présent", className: "status-present" },
+                { value: "to-find", label: "À trouver", className: "status-to-find" },
+                { value: "to-repair", label: "À réparer", className: "status-to-repair" },
+                { value: "to-buy", label: "À acheter", className: "status-to-buy" },
+                { value: "not-needed", label: "Pas besoin", className: "status-not-needed" },
+                { value: "in-truck", label: "Dans le camion", className: "status-in-truck" }
+            ]
+        };
+    },
     
-    Object.keys(inventory.value).forEach(sectionKey => {
-        const section = inventory.value[sectionKey];
-        
-        Object.keys(section.subsections).forEach(subKey => {
-            const subsection = section.subsections[subKey];
-            totalItems += subsection.items.length;
+    computed: {
+        // Calcul de la progression globale basée uniquement sur les éléments "présents"
+        overallProgress() {
+            let totalItems = 0;
+            let presentItems = 0;
             
-            presentItems += subsection.items.filter(item => {
-                // Uniquement compter les éléments marqués comme "présent"
-                const statusPresent = item.status === "present";
+            Object.keys(this.inventory).forEach(sectionKey => {
+                const section = this.inventory[sectionKey];
                 
-                // Pour items avec targetQuantity, vérifier aussi la quantité
-                if (item.targetQuantity) {
-                    return statusPresent && 
-                        item.currentQuantity !== null && 
-                        item.currentQuantity >= item.targetQuantity;
+                Object.keys(section.subsections).forEach(subKey => {
+                    const subsection = section.subsections[subKey];
+                    totalItems += subsection.items.length;
+                    
+                    presentItems += subsection.items.filter(item => {
+                        // Uniquement compter les éléments marqués comme "présent"
+                        const statusPresent = item.status === "present";
+                        
+                        // Pour items avec targetQuantity, vérifier aussi la quantité
+                        if (item.targetQuantity) {
+                            return statusPresent && 
+                                item.currentQuantity !== null && 
+                                item.currentQuantity >= item.targetQuantity;
+                        }
+                        
+                        // Pour items avec variableQuantity, vérifier aussi la quantité
+                        if (item.variableQuantity) {
+                            return statusPresent && item.currentQuantity !== null;
+                        }
+                        
+                        // Pour les items standards, juste vérifier le statut "présent"
+                        return statusPresent;
+                    }).length;
+                });
+            });
+            
+            return totalItems > 0 ? Math.round((presentItems / totalItems) * 100) : 0;
+        },
+        
+        // Compteur d'éléments à trouver
+        toFindCount() {
+            let count = 0;
+            
+            Object.keys(this.inventory).forEach(sectionKey => {
+                const section = this.inventory[sectionKey];
+                
+                Object.keys(section.subsections).forEach(subKey => {
+                    const subsection = section.subsections[subKey];
+                    count += subsection.items.filter(item => item.status === "to-find").length;
+                });
+            });
+            
+            return count;
+        },
+        
+        // Compteur d'éléments à acheter
+        toBuyCount() {
+            let count = 0;
+            
+            Object.keys(this.inventory).forEach(sectionKey => {
+                const section = this.inventory[sectionKey];
+                
+                Object.keys(section.subsections).forEach(subKey => {
+                    const subsection = section.subsections[subKey];
+                    count += subsection.items.filter(item => item.status === "to-buy").length;
+                });
+            });
+            
+            return count;
+        },
+        
+        // Compteur d'éléments à réparer
+        toRepairCount() {
+            let count = 0;
+            
+            Object.keys(this.inventory).forEach(sectionKey => {
+                const section = this.inventory[sectionKey];
+                
+                Object.keys(section.subsections).forEach(subKey => {
+                    const subsection = section.subsections[subKey];
+                    count += subsection.items.filter(item => item.status === "to-repair").length;
+                });
+            });
+            
+            return count;
+        }
+    },
+    
+    methods: {
+        // Navigation et filtres
+        toggleSection(sectionKey) {
+            const index = this.openSections.indexOf(sectionKey);
+            if (index === -1) {
+                // Close all other sections first
+                this.openSections = [sectionKey];
+            } else {
+                this.openSections.splice(index, 1);
+            }
+        },
+        
+        setFilter(filter) {
+            this.currentFilter = filter;
+        },
+        
+        // Gestion des status
+        toggleStatusOptions(section, subsection, item) {
+            if (this.activeStatusDropdown.section === section && 
+                this.activeStatusDropdown.subsection === subsection && 
+                this.activeStatusDropdown.item === item) {
+                // Close if already open
+                this.activeStatusDropdown = { section: null, subsection: null, item: null };
+            } else {
+                // Open this dropdown
+                this.activeStatusDropdown = { section, subsection, item };
+            }
+        },
+        
+        closeStatusOptions() {
+            this.activeStatusDropdown = { section: null, subsection: null, item: null };
+        },
+        
+        getStatusLabel(status) {
+            if (!status) {
+                return 'À vérifier';
+            }
+            
+            const option = this.statusOptions.find(opt => opt.value === status);
+            return option ? option.label : 'À vérifier';
+        },
+        
+        getStatusClass(status) {
+            if (!status) {
+                return '';
+            }
+            
+            const option = this.statusOptions.find(opt => opt.value === status);
+            return option ? option.className : '';
+        },
+        
+        updateItemStatus(sectionKey, subsectionKey, itemIndex, newStatus) {
+            this.inventory[sectionKey].subsections[subsectionKey].items[itemIndex].status = newStatus;
+            this.closeStatusOptions();
+            this.saveInventoryData();
+            
+            // Check if section is complete
+            this.checkSectionCompletion(sectionKey);
+        },
+        
+        // Méthode rapide pour marquer comme "présent"
+        markAsPresent(sectionKey, subsectionKey, itemIndex) {
+            this.inventory[sectionKey].subsections[subsectionKey].items[itemIndex].status = "present";
+            this.saveInventoryData();
+            
+            // Check if section is complete
+            this.checkSectionCompletion(sectionKey);
+            
+            // Feedback visuel temporaire
+            const item = document.querySelector(`[data-item-id="${sectionKey}-${subsectionKey}-${itemIndex}"]`);
+            if (item) {
+                item.classList.add('flash-success');
+                setTimeout(() => {
+                    item.classList.remove('flash-success');
+                }, 500);
+            }
+        },
+        
+        // Gestion des notes
+        openNoteModal(section, subsection, item) {
+            this.currentItem = { section, subsection, item };
+            this.currentNote = this.inventory[section].subsections[subsection].items[item].note || '';
+            this.noteModalActive = true;
+        },
+        
+        closeNoteModal() {
+            this.noteModalActive = false;
+            this.currentItem = { section: null, subsection: null, item: null };
+        },
+        
+        saveNote() {
+            const { section, subsection, item } = this.currentItem;
+            if (section !== null) {
+                this.inventory[section].subsections[subsection].items[item].note = this.currentNote;
+                this.saveInventoryData();
+                this.closeNoteModal();
+                this.showToast('Note enregistrée');
+            }
+        },
+        
+        // Progression et complétion
+        getSectionProgress(sectionKey) {
+            const section = this.inventory[sectionKey];
+            let totalItems = 0;
+            let checkedItems = 0;
+            
+            Object.keys(section.subsections).forEach(subKey => {
+                const subsection = section.subsections[subKey];
+                totalItems += subsection.items.length;
+                
+                checkedItems += subsection.items.filter(item => {
+                    // Check if the item's status is set
+                    const statusSet = item.status !== null;
+                    
+                    // For items with targetQuantity, also check if quantity is set properly
+                    if (item.targetQuantity) {
+                        return statusSet && 
+                            item.currentQuantity !== null && 
+                            item.currentQuantity >= item.targetQuantity;
+                    }
+                    
+                    // For items with variableQuantity, also check if quantity is set
+                    if (item.variableQuantity) {
+                        return statusSet && item.currentQuantity !== null;
+                    }
+                    
+                    // For regular items, just check status
+                    return statusSet;
+                }).length;
+            });
+            
+            const progressPercent = totalItems > 0 ? Math.round((checkedItems / totalItems) * 100) : 0;
+            return `${checkedItems}/${totalItems} (${progressPercent}%)`;
+        },
+        
+        checkSectionCompletion(sectionKey) {
+            const section = this.inventory[sectionKey];
+            let totalItems = 0;
+            let checkedItems = 0;
+            
+            Object.keys(section.subsections).forEach(subKey => {
+                const subsection = section.subsections[subKey];
+                totalItems += subsection.items.length;
+                
+                checkedItems += subsection.items.filter(item => {
+                    // Check if the item's status is set
+                    const statusSet = item.status !== null;
+                    
+                    // For items with targetQuantity, also check if quantity is set properly
+                    if (item.targetQuantity) {
+                        return statusSet && 
+                            item.currentQuantity !== null && 
+                            item.currentQuantity >= item.targetQuantity;
+                    }
+                    
+                    // For items with variableQuantity, also check if quantity is set
+                    if (item.variableQuantity) {
+                        return statusSet && item.currentQuantity !== null;
+                    }
+                    
+                    // For regular items, just check status
+                    return statusSet;
+                }).length;
+            });
+            
+            if (totalItems > 0 && checkedItems === totalItems) {
+                this.celebrationActive = true;
+            }
+        },
+        
+        closeCelebration() {
+            this.celebrationActive = false;
+        },
+        
+        // Vue filtrée
+        getFilteredItems() {
+            const filteredItems = [];
+            
+            Object.keys(this.inventory).forEach(sectionKey => {
+                const section = this.inventory[sectionKey];
+                
+                Object.keys(section.subsections).forEach(subsectionKey => {
+                    const subsection = section.subsections[subsectionKey];
+                    
+                    subsection.items.forEach((item, itemIndex) => {
+                        if (item.status === this.currentFilter) {
+                            // Créer une copie de l'item avec des infos de section
+                            filteredItems.push({
+                                ...item,
+                                sectionKey,
+                                subsectionKey,
+                                itemIndex,
+                                sectionTitle: section.title,
+                                subsectionTitle: subsection.title
+                            });
+                        }
+                    });
+                });
+            });
+            
+            return filteredItems;
+        },
+        
+        markItemInFilteredView(item, status) {
+            this.inventory[item.sectionKey].subsections[item.subsectionKey].items[item.itemIndex].status = status;
+            this.saveInventoryData();
+            this.showToast(`Élément marqué comme "${this.getStatusLabel(status)}"`);
+        },
+        
+        openStatusModalForFilteredItem(item) {
+            this.currentFilteredItem = item;
+            // Ici, vous pourriez implémenter une modal pour changer le statut
+            // Pour l'instant, utilisez une solution simple
+            const newStatus = prompt(
+                `Choisir un nouveau statut pour "${item.name}" :\n1. Présent\n2. À trouver\n3. À réparer\n4. À acheter\n5. Pas besoin\n6. Dans le camion`,
+                "1"
+            );
+            
+            if (newStatus) {
+                let status;
+                switch(newStatus) {
+                    case "1": status = "present"; break;
+                    case "2": status = "to-find"; break;
+                    case "3": status = "to-repair"; break;
+                    case "4": status = "to-buy"; break;
+                    case "5": status = "not-needed"; break;
+                    case "6": status = "in-truck"; break;
+                    default: return;
                 }
                 
-                // Pour items avec variableQuantity, vérifier aussi la quantité
-                if (item.variableQuantity) {
-                    return statusPresent && item.currentQuantity !== null;
+                this.markItemInFilteredView(item, status);
+            }
+        },
+        
+        // Notifications
+        showToast(message) {
+            this.toastMessage = message;
+            this.toastActive = true;
+            
+            setTimeout(() => {
+                this.toastActive = false;
+            }, 3000);
+        },
+        
+        // Gestion des données
+        saveInventoryData() {
+            localStorage.setItem('inventoryData', JSON.stringify(this.inventory));
+        },
+        
+        loadInventoryData() {
+            this.isLoading = true;
+            
+            try {
+                const savedData = localStorage.getItem('inventoryData');
+                if (savedData) {
+                    // Load from localStorage
+                    this.inventory = JSON.parse(savedData);
+                } else {
+                    // Initialize with empty object
+                    this.inventory = {};
                 }
-                
-                // Pour les items standards, juste vérifier le statut "présent"
-                return statusPresent;
-            }).length;
-        });
-    });
-    
-    return totalItems > 0 ? Math.round((presentItems / totalItems) * 100) : 0;
-});
-
-// Compteur d'éléments à trouver
-const toFindCount = computed(() => {
-    let count = 0;
-    
-    Object.keys(inventory.value).forEach(sectionKey => {
-        const section = inventory.value[sectionKey];
-        
-        Object.keys(section.subsections).forEach(subKey => {
-            const subsection = section.subsections[subKey];
-            count += subsection.items.filter(item => item.status === "to-find").length;
-        });
-    });
-    
-    return count;
-});
-
-// Compteur d'éléments à acheter
-const toBuyCount = computed(() => {
-    let count = 0;
-    
-    Object.keys(inventory.value).forEach(sectionKey => {
-        const section = inventory.value[sectionKey];
-        
-        Object.keys(section.subsections).forEach(subKey => {
-            const subsection = section.subsections[subKey];
-            count += subsection.items.filter(item => item.status === "to-buy").length;
-        });
-    });
-    
-    return count;
-});
-
-// Compteur d'éléments à réparer
-const toRepairCount = computed(() => {
-    let count = 0;
-    
-    Object.keys(inventory.value).forEach(sectionKey => {
-        const section = inventory.value[sectionKey];
-        
-        Object.keys(section.subsections).forEach(subKey => {
-            const subsection = section.subsections[subKey];
-            count += subsection.items.filter(item => item.status === "to-repair").length;
-        });
-    });
-    
-    return count;
-});
-
-// Methods
-const toggleSection = (sectionKey) => {
-    const index = openSections.value.indexOf(sectionKey);
-    if (index === -1) {
-        // Close all other sections first
-        openSections.value = [sectionKey];
-    } else {
-        openSections.value.splice(index, 1);
-    }
-};
-
-const toggleStatusOptions = (section, subsection, item) => {
-    if (activeStatusDropdown.value.section === section && 
-        activeStatusDropdown.value.subsection === subsection && 
-        activeStatusDropdown.value.item === item) {
-        // Close if already open
-        activeStatusDropdown.value = { section: null, subsection: null, item: null };
-    } else {
-        // Open this dropdown
-        activeStatusDropdown.value = { section, subsection, item };
-    }
-};
-
-const closeStatusOptions = () => {
-    activeStatusDropdown.value = { section: null, subsection: null, item: null };
-};
-
-const getStatusLabel = (status) => {
-    if (!status) {
-        return 'À vérifier';
-    }
-    
-    const option = statusOptions.find(opt => opt.value === status);
-    return option ? option.label : 'À vérifier';
-};
-
-const getStatusClass = (status) => {
-    if (!status) {
-        return '';
-    }
-    
-    const option = statusOptions.find(opt => opt.value === status);
-    return option ? option.className : '';
-};
-
-const updateItemStatus = (sectionKey, subsectionKey, itemIndex, newStatus) => {
-    inventory.value[sectionKey].subsections[subsectionKey].items[itemIndex].status = newStatus;
-    closeStatusOptions();
-    saveInventoryData();
-    
-    // Check if section is complete
-    checkSectionCompletion(sectionKey);
-};
-
-// Méthode rapide pour marquer comme "présent"
-const markAsPresent = (sectionKey, subsectionKey, itemIndex) => {
-    inventory.value[sectionKey].subsections[subsectionKey].items[itemIndex].status = "present";
-    saveInventoryData();
-    
-    // Check if section is complete
-    checkSectionCompletion(sectionKey);
-    
-    // Feedback visuel temporaire
-    const item = document.querySelector(`[data-item-id="${sectionKey}-${subsectionKey}-${itemIndex}"]`);
-    if (item) {
-        item.classList.add('flash-success');
-        setTimeout(() => {
-            item.classList.remove('flash-success');
-        }, 500);
-    }
-};
-
-const openNoteModal = (section, subsection, item) => {
-    currentItem.value = { section, subsection, item };
-    currentNote.value = inventory.value[section].subsections[subsection].items[item].note || '';
-    noteModalActive.value = true;
-};
-
-const closeNoteModal = () => {
-    noteModalActive.value = false;
-    currentItem.value = { section: null, subsection: null, item: null };
-};
-
-const saveNote = () => {
-    const { section, subsection, item } = currentItem.value;
-    if (section !== null) {
-        inventory.value[section].subsections[subsection].items[item].note = currentNote.value;
-        saveInventoryData();
-        closeNoteModal();
-        showToast('Note enregistrée');
-    }
-};
-
-const getSectionProgress = (sectionKey) => {
-    const section = inventory.value[sectionKey];
-    let totalItems = 0;
-    let checkedItems = 0;
-    
-    Object.keys(section.subsections).forEach(subKey => {
-        const subsection = section.subsections[subKey];
-        totalItems += subsection.items.length;
-        
-        checkedItems += subsection.items.filter(item => {
-            // Check if the item's status is set
-            const statusSet = item.status !== null;
-            
-            // For items with targetQuantity, also check if quantity is set properly
-            if (item.targetQuantity) {
-                return statusSet && 
-                    item.currentQuantity !== null && 
-                    item.currentQuantity >= item.targetQuantity;
+            } catch (error) {
+                console.error('Error loading inventory data:', error);
+                this.inventory = {};
             }
             
-            // For items with variableQuantity, also check if quantity is set
-            if (item.variableQuantity) {
-                return statusSet && item.currentQuantity !== null;
-            }
-            
-            // For regular items, just check status
-            return statusSet;
-        }).length;
-    });
-    
-    const progressPercent = totalItems > 0 ? Math.round((checkedItems / totalItems) * 100) : 0;
-    return `${checkedItems}/${totalItems} (${progressPercent}%)`;
-};
-
-const checkSectionCompletion = (sectionKey) => {
-    const section = inventory.value[sectionKey];
-    let totalItems = 0;
-    let checkedItems = 0;
-    
-    Object.keys(section.subsections).forEach(subKey => {
-        const subsection = section.subsections[subKey];
-        totalItems += subsection.items.length;
+            this.isLoading = false;
+        },
         
-        checkedItems += subsection.items.filter(item => {
-            // Check if the item's status is set
-            const statusSet = item.status !== null;
+        exportData() {
+            const dataStr = JSON.stringify(this.inventory, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
             
-            // For items with targetQuantity, also check if quantity is set properly
-            if (item.targetQuantity) {
-                return statusSet && 
-                    item.currentQuantity !== null && 
-                    item.currentQuantity >= item.targetQuantity;
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `inventory-export-${new Date().toISOString().split('T')[0]}.json`);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            this.showToast('Données exportées avec succès');
+        },
+        
+        importData(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
             }
             
-            // For items with variableQuantity, also check if quantity is set
-            if (item.variableQuantity) {
-                return statusSet && item.currentQuantity !== null;
-            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    this.inventory = importedData;
+                    this.saveInventoryData();
+                    this.showToast('Données importées avec succès');
+                } catch (error) {
+                    console.error('Error importing data:', error);
+                    this.showToast('Erreur lors de l\'importation des données');
+                }
+            };
             
-            // For regular items, just check status
-            return statusSet;
-        }).length;
-    });
-    
-    if (totalItems > 0 && checkedItems === totalItems) {
-        celebrationActive.value = true;
-    }
-};
-
-const closeCelebration = () => {
-    celebrationActive.value = false;
-};
-
-const showToast = (message) => {
-    toastMessage.value = message;
-    toastActive.value = true;
-    
-    setTimeout(() => {
-        toastActive.value = false;
-    }, 3000);
-};
-
-// Data management
-const saveInventoryData = () => {
-    localStorage.setItem('inventoryData', JSON.stringify(inventory.value));
-};
-
-const loadInventoryData = () => {
-    isLoading.value = true;
-    
-    try {
-        const savedData = localStorage.getItem('inventoryData');
-        if (savedData) {
-            // Load from localStorage
-            inventory.value = JSON.parse(savedData);
-        } else {
-            // Initialize with empty object
-            inventory.value = {};
+            reader.readAsText(file);
+            event.target.value = ''; // Reset the input
         }
-    } catch (error) {
-        console.error('Error loading inventory data:', error);
-        inventory.value = {};
-    }
+    },
     
-    isLoading.value = false;
-};
-
-const exportData = () => {
-    const dataStr = JSON.stringify(inventory.value, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.setAttribute('href', url);
-    a.setAttribute('download', `inventory-export-${new Date().toISOString().split('T')[0]}.json`);
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    
-    showToast('Données exportées avec succès');
-};
-
-const importData = (event) => {
-    const file = event.target.files[0];
-    if (!file) {
-        return;
-    }
-    
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        try {
-            const importedData = JSON.parse(e.target.result);
-            inventory.value = importedData;
-            saveInventoryData();
-            showToast('Données importées avec succès');
-        } catch (error) {
-            console.error('Error importing data:', error);
-            showToast('Erreur lors de l\'importation des données');
+    mounted() {
+        // Setup click outside listener
+        document.addEventListener('click', (event) => {
+            // Close status dropdown when clicking outside
+            if (!event.target.closest('.status-dropdown')) {
+                this.closeStatusOptions();
+            }
+        });
+        
+        // Load inventory data
+        this.loadInventoryData();
+        
+        // Open first section by default if there's data
+        if (Object.keys(this.inventory).length > 0) {
+            this.openSections = [Object.keys(this.inventory)[0]];
         }
-    };
-    
-    reader.readAsText(file);
-    event.target.value = ''; // Reset the input
-};
-
-// Setup click outside listener
-onMounted(() => {
-    document.addEventListener('click', (event) => {
-        // Close status dropdown when clicking outside
-        if (!event.target.closest('.status-dropdown')) {
-            closeStatusOptions();
-        }
-    });
-    
-    // Load inventory data
-    loadInventoryData();
-    
-    // Open first section by default if there's data
-    if (Object.keys(inventory.value).length > 0) {
-        openSections.value = [Object.keys(inventory.value)[0]];
     }
-});
-
-// Initialize and return
-return {
-    inventory,
-    isLoading,
-    openSections,
-    activeStatusDropdown,
-    noteModalActive,
-    currentNote,
-    celebrationActive,
-    toastActive,
-    toastMessage,
-    overallProgress,
-    toFindCount,
-    toBuyCount,
-    toRepairCount,
-    currentFilter,
-    statusOptions,
-    toggleSection,
-    toggleStatusOptions,
-    getStatusLabel,
-    getStatusClass,
-    updateItemStatus,
-    markAsPresent,
-    openNoteModal,
-    closeNoteModal,
-    saveNote,
-    getSectionProgress,
-    closeCelebration,
-    exportData,
-    importData,
-    saveInventoryData,
-    setFilter,
-    getFilteredItems,
-    markItemInFilteredView,
-    openStatusModalForFilteredItem
-};
-}
 });
 
 // Mount the app
