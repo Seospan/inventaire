@@ -16,9 +16,23 @@
         
         <div class="container">
             <div class="progress-container">
-                <div>Progression de l'inventaire</div>
+                <div>Progression des éléments présents</div>
                 <div class="progress-bar-container">
                     <div class="progress-bar" :style="{ width: `${overallProgress}%` }">{{ overallProgress }}%</div>
+                </div>
+                <div class="counters">
+                    <div class="counter to-find">
+                        <span class="counter-value">{{ toFindCount }}</span>
+                        <span class="counter-label">À trouver</span>
+                    </div>
+                    <div class="counter to-buy">
+                        <span class="counter-value">{{ toBuyCount }}</span>
+                        <span class="counter-label">À acheter</span>
+                    </div>
+                    <div class="counter to-repair">
+                        <span class="counter-value">{{ toRepairCount }}</span>
+                        <span class="counter-label">À réparer</span>
+                    </div>
                 </div>
             </div>
             

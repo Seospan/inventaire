@@ -56,6 +56,7 @@ h1 {
     height: 20px;
     overflow: hidden;
     margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 .progress-bar {
@@ -69,6 +70,56 @@ h1 {
     color: white;
     font-size: 12px;
     font-weight: bold;
+}
+
+.counters {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    padding: 8px 15px;
+    min-width: 80px;
+}
+
+.counter-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.counter-label {
+    font-size: 0.8rem;
+    color: var(--dark);
+}
+
+.counter.to-find {
+    background-color: rgba(255, 193, 7, 0.2);
+}
+
+.counter.to-find .counter-value {
+    color: #f57c00;
+}
+
+.counter.to-buy {
+    background-color: rgba(244, 67, 54, 0.2);
+}
+
+.counter.to-buy .counter-value {
+    color: var(--danger);
+}
+
+.counter.to-repair {
+    background-color: rgba(33, 150, 243, 0.2);
+}
+
+.counter.to-repair .counter-value {
+    color: var(--info);
 }
 
 .section {

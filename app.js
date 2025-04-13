@@ -29,7 +29,7 @@ const app = createApp({
         // Computed
         const overallProgress = computed(() => {
             let totalItems = 0;
-            let checkedItems = 0;
+            let presentItems = 0;
             
             Object.keys(inventory.value).forEach(sectionKey => {
                 const section = inventory.value[sectionKey];
@@ -38,29 +38,77 @@ const app = createApp({
                     const subsection = section.subsections[subKey];
                     totalItems += subsection.items.length;
                     
-                    checkedItems += subsection.items.filter(item => {
-                        // Check if the item's status is set
-                        const statusSet = item.status !== null;
+                    presentItems += subsection.items.filter(item => {
+                        // Uniquement compter les éléments marqués comme "présent"
+                        const statusPresent = item.status === "present";
                         
-                        // For items with targetQuantity, also check if quantity is set properly
+                        // Pour items avec targetQuantity, vérifier aussi la quantité
                         if (item.targetQuantity) {
-                            return statusSet && 
+                            return statusPresent && 
                                 item.currentQuantity !== null && 
                                 item.currentQuantity >= item.targetQuantity;
                         }
                         
-                        // For items with variableQuantity, also check if quantity is set
+                        // Pour items avec variableQuantity, vérifier aussi la quantité
                         if (item.variableQuantity) {
-                            return statusSet && item.currentQuantity !== null;
+                            return statusPresent && item.currentQuantity !== null;
                         }
                         
-                        // For regular items, just check status
-                        return statusSet;
+                        // Pour les items standards, juste vérifier le statut "présent"
+                        return statusPresent;
                     }).length;
                 });
             });
             
-            return totalItems > 0 ? Math.round((checkedItems / totalItems) * 100) : 0;
+            return totalItems > 0 ? Math.round((presentItems / totalItems) * 100) : 0;
+        });
+        
+        // Compteur d'éléments à trouver
+        const toFindCount = computed(() => {
+            let count = 0;
+            
+            Object.keys(inventory.value).forEach(sectionKey => {
+                const section = inventory.value[sectionKey];
+                
+                Object.keys(section.subsections).forEach(subKey => {
+                    const subsection = section.subsections[subKey];
+                    count += subsection.items.filter(item => item.status === "to-find").length;
+                });
+            });
+            
+            return count;
+        });
+        
+        // Compteur d'éléments à acheter
+        const toBuyCount = computed(() => {
+            let count = 0;
+            
+            Object.keys(inventory.value).forEach(sectionKey => {
+                const section = inventory.value[sectionKey];
+                
+                Object.keys(section.subsections).forEach(subKey => {
+                    const subsection = section.subsections[subKey];
+                    count += subsection.items.filter(item => item.status === "to-buy").length;
+                });
+            });
+            
+            return count;
+        });
+        
+        // Compteur d'éléments à réparer
+        const toRepairCount = computed(() => {
+            let count = 0;
+            
+            Object.keys(inventory.value).forEach(sectionKey => {
+                const section = inventory.value[sectionKey];
+                
+                Object.keys(section.subsections).forEach(subKey => {
+                    const subsection = section.subsections[subKey];
+                    count += subsection.items.filter(item => item.status === "to-repair").length;
+                });
+            });
+            
+            return count;
         });
         
         // Methods
@@ -331,13 +379,16 @@ const app = createApp({
             toastActive,
             toastMessage,
             overallProgress,
+            toFindCount,
+            toBuyCount,
+            toRepairCount,
             statusOptions,
             toggleSection,
             toggleStatusOptions,
             getStatusLabel,
             getStatusClass,
             updateItemStatus,
-            markAsPresent,  // Ajout de la nouvelle méthode
+            markAsPresent,
             openNoteModal,
             closeNoteModal,
             saveNote,
