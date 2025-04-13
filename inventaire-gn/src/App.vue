@@ -7,16 +7,20 @@
     <main class="container">
       <InventoryManager />
     </main>
+
+    <ThemeToggle />
   </div>
 </template>
 
 <script>
 import InventoryManager from './components/inventory/InventoryManager.vue'
+import ThemeToggle from './components/ui/ThemeToggle.vue'
 
 export default {
   name: 'App',
   components: {
-    InventoryManager
+    InventoryManager,
+    ThemeToggle
   }
 }
 </script>
