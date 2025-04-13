@@ -44,12 +44,104 @@
                 </label>
             </div>
             
+            <!-- Ajout des onglets de filtre -->
+            <div class="filter-tabs">
+                <button 
+                    class="filter-tab" 
+                    :class="{ active: currentFilter === 'all' }" 
+                    @click="setFilter('all')"
+                >
+                    Tous
+                </button>
+                <button 
+                    class="filter-tab" 
+                    :class="{ active: currentFilter === 'to-buy' }" 
+                    @click="setFilter('to-buy')"
+                >
+                    À acheter <span class="tab-count">{{ toBuyCount }}</span>
+                </button>
+                <button 
+                    class="filter-tab" 
+                    :class="{ active: currentFilter === 'to-find' }" 
+                    @click="setFilter('to-find')"
+                >
+                    À trouver <span class="tab-count">{{ toFindCount }}</span>
+                </button>
+                <button 
+                    class="filter-tab" 
+                    :class="{ active: currentFilter === 'to-repair' }" 
+                    @click="setFilter('to-repair')"
+                >
+                    À réparer <span class="tab-count">{{ toRepairCount }}</span>
+                </button>
+                <button 
+                    class="filter-tab" 
+                    :class="{ active: currentFilter === 'present' }" 
+                    @click="setFilter('present')"
+                >
+                    Présent
+                </button>
+            </div>
+            
             <div v-if="isLoading" class="loader">
                 <div></div>
                 <div></div>
                 <div></div>
             </div>
             
+            <!-- Vue par statut -->
+            <div v-else-if="currentFilter !== 'all'" class="filtered-view">
+                <h3 class="filtered-view-title">Éléments {{ getStatusLabel(currentFilter).toLowerCase() }}</h3>
+                
+                <div v-if="getFilteredItems().length === 0" class="empty-filter-message">
+                    Aucun élément avec ce statut
+                </div>
+                
+                <div v-else class="filtered-items">
+                    <div v-for="(item, index) in getFilteredItems()" :key="index" class="filtered-item">
+                        <div class="filtered-item-header">
+                            <div class="filtered-item-name">{{ item.name }}</div>
+                            <div class="filtered-item-section">{{ item.sectionTitle }} > {{ item.subsectionTitle }}</div>
+                        </div>
+                        
+                        <div class="filtered-item-details">
+                            <div v-if="item.targetQuantity" class="filtered-item-quantity">
+                                Quantité: {{ item.targetQuantity }}{{ item.isMinimumQuantity ? '+' : '' }}
+                                <span v-if="item.currentQuantity !== null">(Actuel: {{ item.currentQuantity }})</span>
+                            </div>
+                            
+                            <div v-if="item.variableQuantity && item.currentQuantity !== null" class="filtered-item-quantity">
+                                Quantité: {{ item.currentQuantity }}
+                            </div>
+                            
+                            <div v-if="item.note" class="filtered-item-note">
+                                <strong>Note:</strong> {{ item.note }}
+                            </div>
+                        </div>
+                        
+                        <div class="filtered-item-actions">
+                            <button 
+                                class="quick-ok-btn" 
+                                @click="markItemInFilteredView(item, 'present')"
+                            >
+                                Marquer présent
+                            </button>
+                            <button 
+                                class="change-status-btn" 
+                                @click="openStatusModalForFilteredItem(item)"
+                            >
+                                Changer statut
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="back-to-all-btn" @click="setFilter('all')">
+                    Retour à l'inventaire complet
+                </button>
+            </div>
+            
+            <!-- Vue normale (tous les éléments) -->
             <div v-else v-for="(section, sectionKey) in inventory" :key="sectionKey" class="section">
                 <div class="section-header" @click="toggleSection(sectionKey)">
                     <h2>{{ section.title }}</h2>
