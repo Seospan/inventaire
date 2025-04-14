@@ -78,20 +78,71 @@ export function useInventory() {
       // Notification de succès
       showToast(`Statut mis à jour : ${getStatusLabel(status)}`);
       
+      // Si l'élément est associé à une box, mettre à jour le statut de la box
+      if (item.boxId) {
+        const parentBox = getBoxById(item.boxId);
+        if (parentBox) {
+          updateBoxStatusFromContents(parentBox);
+        }
+      }
+      
       // Si l'élément est une box, vérifier si tous les éléments qu'elle contient 
       // sont également présents
-      if (item.isBox && status === STATUS.PRESENT) {
-        checkBoxContents(item.boxId);
+      if (item.isBox) {
+        checkBoxContents(item);
+        // Mettre à jour le statut de la box en fonction des éléments qu'elle contient
+        updateBoxStatusFromContents(item);
       }
+      
+      // Recalcul des métriques après changement
+      calculateMetrics();
     }
   };
   
+  // Obtenir une box par son ID
+  const getBoxById = (boxId) => {
+    let foundBox = null;
+    
+    // Parcourir toutes les sections pour trouver la box
+    Object.keys(inventory.value).forEach(sectionKey => {
+      const section = inventory.value[sectionKey];
+      
+      Object.keys(section.subsections || {}).forEach(subsectionKey => {
+        const subsection = section.subsections[subsectionKey];
+        
+        (subsection.items || []).forEach(item => {
+          if (item.isBox && item.boxId === boxId) {
+            foundBox = item;
+          }
+        });
+      });
+    });
+    
+    return foundBox;
+  };
+  
+  // Récupérer tous les éléments contenus dans une box
+  const getAllBoxItems = (box) => {
+    if (!box || !box.contents) return [];
+    
+    const allItems = [];
+    
+    Object.keys(box.contents).forEach(subsectionKey => {
+      const subsection = box.contents[subsectionKey];
+      (subsection.items || []).forEach(item => {
+        allItems.push(item);
+      });
+    });
+    
+    return allItems;
+  };
+  
   // Vérification du contenu d'une box
-  const checkBoxContents = (boxId) => {
-    if (!boxId) return;
+  const checkBoxContents = (box) => {
+    if (!box || !box.isBox || !box.contents) return;
     
     // Trouver tous les éléments qui sont dans cette box
-    const boxContents = findBoxContents(boxId);
+    const boxContents = getAllBoxItems(box);
     
     // Si des éléments ne sont pas marqués comme présents, suggérer de les vérifier
     const notPresent = boxContents.filter(item => 
@@ -101,27 +152,6 @@ export function useInventory() {
     if (notPresent.length > 0) {
       showToast(`Attention: ${notPresent.length} élément(s) de cette box ne sont pas marqués comme présents.`, 'warning', 5000);
     }
-  };
-  
-  // Trouver tous les éléments contenus dans une box
-  const findBoxContents = (boxId) => {
-    const contents = [];
-    
-    Object.keys(inventory.value).forEach(sectionKey => {
-      const section = inventory.value[sectionKey];
-      
-      Object.keys(section.subsections || {}).forEach(subsectionKey => {
-        const subsection = section.subsections[subsectionKey];
-        
-        (subsection.items || []).forEach(item => {
-          if (item.boxId === boxId) {
-            contents.push(item);
-          }
-        });
-      });
-    });
-    
-    return contents;
   };
   
   // Mise à jour de la note d'un élément
@@ -169,38 +199,66 @@ export function useInventory() {
     }
   };
   
-  // Filtrer les éléments par statut
-  const filteredItems = computed(() => {
-    if (currentFilter.value === 'all') return [];
+  // Mettre à jour le statut d'une box en fonction de son contenu
+  const updateBoxStatusFromContents = (box) => {
+    if (!box || !box.isBox) return;
     
-    const items = [];
+    // Récupérer tous les éléments contenus dans la box
+    const contents = getAllBoxItems(box);
+    if (contents.length === 0) return;
     
-    Object.keys(inventory.value).forEach(sectionKey => {
-      const section = inventory.value[sectionKey];
-      
-      Object.keys(section.subsections || {}).forEach(subsectionKey => {
-        const subsection = section.subsections[subsectionKey];
-        
-        (subsection.items || []).forEach(item => {
-          if (
-            (currentFilter.value === 'null' && item.status === null) ||
-            (item.status === currentFilter.value)
-          ) {
-            items.push({
-              ...item,
-              sectionTitle: section.title,
-              subsectionTitle: subsection.title
-            });
-          }
-        });
-      });
+    // Compter le statut de tous les contenus
+    const statusCounts = {
+      [STATUS.PRESENT]: 0,
+      [STATUS.TO_FIND]: 0,
+      [STATUS.TO_BUY]: 0,
+      [STATUS.TO_REPAIR]: 0,
+      [STATUS.NOT_NEEDED]: 0,
+      [STATUS.IN_TRUCK]: 0,
+      'null': 0  // Pour le statut null
+    };
+    
+    contents.forEach(item => {
+      const status = item.status || 'null';
+      statusCounts[status] = (statusCounts[status] || 0) + 1;
     });
     
-    return items;
-  });
+    // Déterminer le statut de la box en fonction du statut de son contenu
+    if (statusCounts[STATUS.IN_TRUCK] === contents.length) {
+      // Tous les éléments sont dans le camion - marquer la box comme dans le camion
+      box.status = STATUS.IN_TRUCK;
+    } else if (statusCounts[STATUS.IN_TRUCK] + statusCounts[STATUS.PRESENT] === contents.length) {
+      // Tous les éléments sont présents ou dans le camion - marquer la box comme présente
+      box.status = STATUS.PRESENT;
+    } else if (statusCounts[STATUS.TO_FIND] > 0) {
+      // Certains éléments sont à trouver - marquer la box comme à trouver
+      box.status = STATUS.TO_FIND;
+    } else if (statusCounts[STATUS.TO_BUY] > 0) {
+      // Certains éléments sont à acheter - marquer la box comme à acheter
+      box.status = STATUS.TO_BUY;
+    } else if (statusCounts[STATUS.TO_REPAIR] > 0) {
+      // Certains éléments sont à réparer - marquer la box comme à réparer
+      box.status = STATUS.TO_REPAIR;
+    } else if (statusCounts['null'] > 0) {
+      // Certains éléments n'ont pas été vérifiés
+      box.status = null;
+    } else {
+      // Statuts mixtes ou cas spécial
+      if (statusCounts[STATUS.NOT_NEEDED] === contents.length) {
+        // Tous les contenus ne sont pas nécessaires
+        box.status = STATUS.NOT_NEEDED;
+      } else {
+        // Mixte - par défaut à vérifier
+        box.status = null;
+      }
+    }
+    
+    // Sauvegarder les changements
+    saveInventory();
+  };
   
   // Calcul des métriques pour la progression
-  const metrics = computed(() => {
+  const calculateMetrics = () => {
     let total = 0;
     let present = 0;
     let toFind = 0;
@@ -211,6 +269,7 @@ export function useInventory() {
     let boxCount = 0;
     let boxContentCount = 0;
     
+    // Parcourir toutes les sections
     Object.keys(inventory.value).forEach(sectionKey => {
       const section = inventory.value[sectionKey];
       
@@ -221,14 +280,45 @@ export function useInventory() {
           // Compter les box
           if (item.isBox) {
             boxCount++;
+            
+            // Compter les éléments contenus dans les box
+            if (item.contents) {
+              Object.keys(item.contents).forEach(contentSubsectionKey => {
+                const contentSubsection = item.contents[contentSubsectionKey];
+                
+                (contentSubsection.items || []).forEach(contentItem => {
+                  boxContentCount++;
+                  
+                  // On exclut du total les éléments marqués comme "non pertinents"
+                  if (contentItem.status !== STATUS.NOT_NEEDED) {
+                    total++;
+                    
+                    switch (contentItem.status) {
+                      case STATUS.PRESENT:
+                        present++;
+                        break;
+                      case STATUS.TO_FIND:
+                        toFind++;
+                        break;
+                      case STATUS.TO_BUY:
+                        toBuy++;
+                        break;
+                      case STATUS.TO_REPAIR:
+                        toRepair++;
+                        break;
+                      case STATUS.IN_TRUCK:
+                        inTruck++;
+                        break;
+                    }
+                  } else {
+                    notNeeded++;
+                  }
+                });
+              });
+            }
           }
           
-          // Compter les éléments contenus dans des box
-          if (item.boxId) {
-            boxContentCount++;
-          }
-          
-          // On exclut du total les éléments marqués comme "non pertinents"
+          // Compter les éléments principaux (qui ne sont pas dans des box)
           if (item.status !== STATUS.NOT_NEEDED) {
             total++;
             
@@ -261,7 +351,7 @@ export function useInventory() {
       ? Math.round(((present + inTruck) / total) * 100) 
       : 0;
     
-    return {
+    metrics.value = {
       total,
       present,
       toFind,
@@ -273,6 +363,75 @@ export function useInventory() {
       boxCount,
       boxContentCount
     };
+  };
+  
+  // Initialiser les métriques
+  const metrics = ref({
+    total: 0,
+    present: 0,
+    toFind: 0,
+    toBuy: 0,
+    toRepair: 0,
+    notNeeded: 0,
+    inTruck: 0,
+    progress: 0,
+    boxCount: 0,
+    boxContentCount: 0
+  });
+  
+  // Recalculer les métriques lors des changements d'inventaire
+  watch(inventory, () => {
+    calculateMetrics();
+  }, { deep: true });
+  
+  // Filtrer les éléments par statut
+  const filteredItems = computed(() => {
+    if (currentFilter.value === 'all') return [];
+    
+    const items = [];
+    
+    Object.keys(inventory.value).forEach(sectionKey => {
+      const section = inventory.value[sectionKey];
+      
+      Object.keys(section.subsections || {}).forEach(subsectionKey => {
+        const subsection = section.subsections[subsectionKey];
+        
+        (subsection.items || []).forEach(item => {
+          // Vérifier si cet élément standard correspond au filtre
+          if (
+            (currentFilter.value === 'null' && item.status === null) ||
+            (item.status === currentFilter.value)
+          ) {
+            items.push({
+              ...item,
+              sectionTitle: section.title,
+              subsectionTitle: subsection.title
+            });
+          }
+          
+          // Si c'est une box, vérifier son contenu également
+          if (item.isBox && item.contents) {
+            Object.keys(item.contents).forEach(contentSubsectionKey => {
+              const contentSubsection = item.contents[contentSubsectionKey];
+              
+              (contentSubsection.items || []).forEach(contentItem => {
+                if (
+                  (currentFilter.value === 'null' && contentItem.status === null) || (contentItem.status === currentFilter.value)
+                ) {
+                  items.push({
+                    ...contentItem,
+                    sectionTitle: section.title,
+                    subsectionTitle: `${subsection.title} > ${item.name} > ${contentSubsection.title}`
+                  });
+                }
+              });
+            });
+          }
+        });
+      });
+    });
+    
+    return items;
   });
   
   // Gestion des toasts (notifications)
@@ -303,6 +462,19 @@ export function useInventory() {
           if (item.status === STATUS.PRESENT || item.status === STATUS.IN_TRUCK) {
             completed++;
           }
+          
+          // Compter également les contenus des boxes
+          if (item.isBox && item.contents) {
+            const boxItems = getAllBoxItems(item);
+            boxItems.forEach(boxItem => {
+              if (boxItem.status !== STATUS.NOT_NEEDED) {
+                total++;
+                if (boxItem.status === STATUS.PRESENT || boxItem.status === STATUS.IN_TRUCK) {
+                  completed++;
+                }
+              }
+            });
+          }
         }
       });
     });
@@ -320,57 +492,8 @@ export function useInventory() {
     }
   };
   
-  // Obtenir les informations d'un élément box par son ID
-  const getBoxById = (boxId) => {
-    let foundBox = null;
-    
-    Object.keys(inventory.value).forEach(sectionKey => {
-      const section = inventory.value[sectionKey];
-      
-      Object.keys(section.subsections || {}).forEach(subsectionKey => {
-        const subsection = section.subsections[subsectionKey];
-        
-        (subsection.items || []).forEach(item => {
-          if (item.isBox && item.boxId === boxId) {
-            foundBox = item;
-          }
-        });
-      });
-    });
-    
-    return foundBox;
-  };
-  
-  // Mise à jour automatique du statut des boxes en fonction de leur contenu
-  const updateBoxStatusFromContents = (boxId) => {
-    // Trouver la box
-    const box = getBoxById(boxId);
-    if (!box) return;
-    
-    // Trouver les éléments de cette box
-    const contents = findBoxContents(boxId);
-    if (contents.length === 0) return;
-    
-    // Vérifier si tous les éléments sont présents/dans le camion
-    const allPresent = contents.every(item => 
-      item.status === STATUS.PRESENT || 
-      item.status === STATUS.IN_TRUCK || 
-      item.status === STATUS.NOT_NEEDED
-    );
-    
-    // Vérifier si tous les éléments sont dans le camion
-    const allInTruck = contents.every(item => 
-      item.status === STATUS.IN_TRUCK || 
-      item.status === STATUS.NOT_NEEDED
-    );
-    
-    // Mettre à jour le statut de la box en fonction
-    if (allInTruck && box.status !== STATUS.IN_TRUCK) {
-      updateItemStatus(box, STATUS.IN_TRUCK);
-    } else if (allPresent && !allInTruck && box.status !== STATUS.PRESENT) {
-      updateItemStatus(box, STATUS.PRESENT);
-    }
-  };
+  // Calculer les métriques initiales
+  calculateMetrics();
   
   return {
     // États
@@ -385,6 +508,7 @@ export function useInventory() {
     toastActive,
     toastMessage,
     currentFilter,
+    metrics,
     
     // Constantes
     STATUS,
@@ -399,12 +523,11 @@ export function useInventory() {
     getStatusClass,
     showToast,
     checkSectionCompletion,
-    findBoxContents,
     getBoxById,
+    getAllBoxItems,
     updateBoxStatusFromContents,
     
     // Computed
-    filteredItems,
-    metrics
+    filteredItems
   };
 }

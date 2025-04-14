@@ -102,7 +102,7 @@
   </template>
   
   <script setup>
-  import { ref, onMounted, onUnmounted, watch } from 'vue';
+  import { ref, onMounted, onUnmounted } from 'vue';
   import { useInventory } from '../../composables/useInventory';
   import { useStorage } from '../../composables/useStorage';
   import { prepareInventoryData, validateInventoryData } from '../../utils/initData';
@@ -115,6 +115,9 @@
   import CelebrationModal from '../ui/CelebrationModal.vue';
   import Toast from '../ui/Toast.vue';
   
+  // État pour le type de toast
+  const toastType = ref('info');
+  
   // Récupération des composables
   const { 
     inventory, isLoading, openSections, activeStatusDropdown,
@@ -122,13 +125,10 @@
     toastActive, toastMessage, currentFilter, STATUS,
     loadInventory, saveInventory, updateItemStatus, updateItemNote,
     getStatusLabel, getStatusClass, showToast, checkSectionCompletion,
-    filteredItems, metrics, findBoxContents, updateBoxStatusFromContents
+    filteredItems, metrics, updateBoxStatusFromContents, getAllBoxItems
   } = useInventory();
   
   const { exportData, importData, clearData } = useStorage();
-  
-  // État pour le type de toast
-  const toastType = ref('info');
   
   // Chargement des données au démarrage
   onMounted(async () => {
@@ -248,7 +248,6 @@
   const handleDocumentClick = (event) => {
     if (activeStatusDropdown.value) {
       // Vérifier si le clic est à l'extérieur du dropdown
-      // Ceci est une version simplifiée, vous pourriez avoir besoin d'une logique plus précise
       activeStatusDropdown.value = null;
     }
   };
@@ -272,19 +271,35 @@
     }
   };
   
-  // Mettre à jour le statut d'un élément depuis la vue box
-  const updateBoxItemStatus = (item, status) => {
-    updateItemStatus(item, status);
+  // Obtenir une box par son ID
+  const getBoxById = (boxId) => {
+    let foundBox = null;
     
-    // Vérifier si la box elle-même devrait être mise à jour
-    if (item.boxId) {
-      updateBoxStatusFromContents(item.boxId);
-    }
+    // Parcourir toutes les sections pour trouver la box
+    Object.keys(inventory.value).forEach(sectionKey => {
+      const section = inventory.value[sectionKey];
+      
+      Object.keys(section.subsections || {}).forEach(subsectionKey => {
+        const subsection = section.subsections[subsectionKey];
+        
+        (subsection.items || []).forEach(item => {
+          if (item.isBox && item.boxId === boxId) {
+            foundBox = item;
+          }
+        });
+      });
+    });
+    
+    return foundBox;
   };
   
   // Marquer tous les éléments d'une box comme présents
   const markAllBoxItemsPresent = (boxId) => {
-    const contents = findBoxContents(boxId);
+    const box = getBoxById(boxId);
+    if (!box) return;
+    
+    // Récupérer tous les éléments de la box
+    const contents = getAllBoxItems(box);
     
     contents.forEach(item => {
       if (item.status !== STATUS.PRESENT && item.status !== STATUS.NOT_NEEDED) {
@@ -293,14 +308,18 @@
     });
     
     // Mettre à jour le statut de la box elle-même
-    updateBoxStatusFromContents(boxId);
+    updateBoxStatusFromContents(box);
     
     showToast('Tous les éléments ont été marqués comme présents');
   };
   
   // Marquer tous les éléments d'une box comme dans le camion
   const markAllBoxItemsInTruck = (boxId) => {
-    const contents = findBoxContents(boxId);
+    const box = getBoxById(boxId);
+    if (!box) return;
+    
+    // Récupérer tous les éléments de la box
+    const contents = getAllBoxItems(box);
     
     contents.forEach(item => {
       if (item.status !== STATUS.IN_TRUCK && item.status !== STATUS.NOT_NEEDED) {
@@ -309,7 +328,7 @@
     });
     
     // Mettre à jour le statut de la box elle-même
-    updateBoxStatusFromContents(boxId);
+    updateBoxStatusFromContents(box);
     
     showToast('Tous les éléments ont été marqués comme dans le camion');
   };
@@ -327,7 +346,7 @@
         const subsection = section.subsections[subsectionKey];
         
         (subsection.items || []).forEach(item => {
-          if (item.boxId === boxId) {
+          if (item.isBox && item.boxId === boxId) {
             foundSectionKey = sectionKey;
           }
         });
