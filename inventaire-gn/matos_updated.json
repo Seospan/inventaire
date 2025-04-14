@@ -1,0 +1,2869 @@
+{
+  "stand": {
+    "title": "Stand",
+    "subsections": {
+      "caisses": {
+        "title": "Caisses",
+        "items": [
+          {
+            "name": "Caisse admin",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_admin"
+          },
+          {
+            "name": "Classeur",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "classeur_admin"
+          },
+          {
+            "name": "Caisse $",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null
+          },
+          {
+            "name": "Coffre",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null
+          },
+          {
+            "name": "Caisse divers déco",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_divers_deco"
+          },
+          {
+            "name": "Caisse \"fixations déco\"",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_fixations_deco"
+          },
+          {
+            "name": "Caisse électricité / lumière",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_electricite_lumiere"
+          },
+          {
+            "name": "Brico 1 (mallette à outils)",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_brico1"
+          },
+          {
+            "name": "Caisse brico 2",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_brico2"
+          },
+          {
+            "name": "Caisse lests barnums",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null
+          },
+          {
+            "name": "Caisse déco fleurs",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null
+          },
+          {
+            "name": "Caisse déco feuillages",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null
+          },
+          {
+            "name": "Caisse pharmacie",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_pharmacie"
+          },
+          {
+            "name": "Caisse hygiène",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_hygiene"
+          }
+        ]
+      }
+    }
+  },
+  "cuisine": {
+    "title": "Cuisine",
+    "subsections": {
+      "caisses": {
+        "title": "Caisses",
+        "items": [
+          {
+            "name": "Caisse Tissus",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_tissus"
+          },
+          {
+            "name": "Caisse Torchons",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_torchons"
+          },
+          {
+            "name": "Malle ustensiles (verte)",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "malle_ustensiles"
+          },
+          {
+            "name": "Caisse petits ustensiles",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_petits_ustensiles"
+          },
+          {
+            "name": "Electroménager + Kitchenaid (2 caisses)",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "electromenager_kitchenaid"
+          },
+          {
+            "name": "Caisse Café",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_cafe"
+          },
+          {
+            "name": "Caisse chauffe + consommables cuisine",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_chauffe_consommables_cuisine"
+          },
+          {
+            "name": "Caisse couverts",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_couverts"
+          },
+          {
+            "name": "Caisse consommables service",
+            "isBox": true,
+            "status": null,
+            "inTruck": false,
+            "note": "",
+            "currentQuantity": null,
+            "boxId": "caisse_consommables_service"
+          }
+        ]
+      },
+      "ecocups": {
+        "title": "Ecocups",
+        "items": [
+          {
+            "name": "Ecocups 50cl",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Ecocups 25cl",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Eco Cups 12cl",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    }
+  },
+  "mobilier_de_stand": {
+    "title": "Hors malles : Mobilier de stand",
+    "subsections": {
+      "abri": {
+        "title": "Abri",
+        "items": [
+          {
+            "name": "Barnums 4x3",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Barnum 3x3",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Sac de murs petit barnum",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Sacs de murs grand barnum",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Gouttière de barnum",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tarp",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pieds pour tarp",
+            "targetQuantity": 4,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "tables": {
+        "title": "Tables",
+        "items": [
+          {
+            "name": "Tables pliantes",
+            "targetQuantity": 4,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tables \"vendavel\"",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tréteaux (évier)",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Planche avec tasseaux plan de travail haut",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Planche avec tasseaux plan de travail bas",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Étagères plastique démontées",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Meuble de présentation bouteilles",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "assises": {
+        "title": "Assises",
+        "items": [
+          {
+            "name": "Tabourets quechua",
+            "targetQuantity": 4,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tabourets pliants cuir",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Chaise quechua",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "ardoises": {
+        "title": "Ardoises",
+        "items": [
+          {
+            "name": "Grande ardoise de menu",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Petites ardoises",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Ardoise pliante",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tableau velleda",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "electricite": {
+        "title": "Electricité",
+        "items": [
+          {
+            "name": "Enrouleur électrique 50m",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "autres": {
+        "title": "Autres",
+        "items": [
+          {
+            "name": "Poubelles alu à pinces",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Caillebotis",
+            "targetQuantity": 10,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": "Selon météo et présence d'un frigo"
+          },
+          {
+            "name": "Evier",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Marche pied 3 marches pliant",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Cales pour la remorque",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    }
+  },
+  "deco": {
+    "title": "Hors malles : Déco",
+    "subsections": {
+      "items": {
+        "title": "Décorations",
+        "items": [
+          {
+            "name": "Planche décorée avec trous pour les bouteilles",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Planche non décorée",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Enseigne",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tonnelet déco",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    }
+  },
+  "dodo": {
+    "title": "Hors malles : Dodo",
+    "subsections": {
+      "items": {
+        "title": "Couchage",
+        "items": [
+          {
+            "name": "Sahara 600 : sac toile + sac tapis de sol + sac piquet",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Sahara 300",
+            "targetQuantity": 1,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": "1 ou 2"
+          },
+          {
+            "name": "Caisse de sardines",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Matelas gonflable (soval)",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tapis de sol gonflable",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Duvet 2 places",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    }
+  },
+  "cuisine_hors_malles": {
+    "title": "Hors malles : Cuisine",
+    "subsections": {
+      "cuisson": {
+        "title": "Cuisson",
+        "items": [
+          {
+            "name": "Gamelle 80L alu avec couvercle",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Gamelle 100L alu avec couvercle",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Gamelles moyennes (<60L)",
+            "targetQuantity": 2,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": "1 basse, 1 haute au moins"
+          },
+          {
+            "name": "Poele",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Casserole à queue",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Paniers à bao : 1 cocotte bas + 4 paniers + couvercle",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "bruleurs": {
+        "title": "Brûleurs",
+        "items": [
+          {
+            "name": "Brûleurs 2kw avec pieds",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Brûleur à paëlla",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Brûleur \"réacteur d'avion\"",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Cubes propane",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Extincteur",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "eau": {
+        "title": "Eau",
+        "items": [
+          {
+            "name": "Bidons 25L",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Bidons 10L",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Bidons 5L",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Seaux à eaux sales",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "stockage_alimentaire": {
+        "title": "Stockage alimentaire",
+        "items": [
+          {
+            "name": "Bacs gastro",
+            "targetQuantity": 4,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Bac gastro troué",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Seaux alimentaires 10L",
+            "targetQuantity": 5,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Boites alimentaires 5L",
+            "targetQuantity": 4,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Thermos",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Glacière métro rigide",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Glacière bois",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Glacières métro souples",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "gros_electromenager": {
+        "title": "Gros électroménager",
+        "items": [
+          {
+            "name": "Frigo",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Grand perco",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Machine à glaçons",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": "Pour l'été"
+          },
+          {
+            "name": "Marmites à soupe",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": "Pour l'hiver"
+          }
+        ]
+      }
+    }
+  },
+  "consommables_service": {
+    "title": "Hors malle : Consommables de service",
+    "subsections": {
+      "items": {
+        "title": "Consommables",
+        "items": [
+          {
+            "name": "Assiettes à plats 750ml",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Bols à desserts 250ml",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Verres carton 20cl",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Verres carton 12cl",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Serviettes",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Barquettes alu",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    }
+  },
+  "conso_miams": {
+    "title": "Hors malle : Conso-miams",
+    "subsections": {
+      "items": {
+        "title": "Consommables alimentaires",
+        "items": [
+          {
+            "name": "Boite à épices",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Compos miam venant du stock",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Bocaux",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pâtisserie",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Bouteilles Bullerie",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Fûts de bière",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    }
+  },
+  "caisse_admin_contents": {
+    "title": "Contenu : Caisse admin",
+    "subsections": {
+      "tiroir_1": {
+        "title": "Tiroir 1 : Papeterie",
+        "items": [
+          {
+            "name": "Spray ardoises",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Stylos",
+            "targetQuantity": 5,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Feutres indélébiles",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Agrafeuse",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Ciseaux",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Patafix",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Feutres ardoise / Woody",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Scotch",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pinces",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Elastiques",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "tiroir_2": {
+        "title": "Tiroir 2 : Prise de commande",
+        "items": [
+          {
+            "name": "Blocs maitre d'hotel",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Sumup",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Fiches bristol",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Stylos",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "tiroir_3": {
+        "title": "Tiroir 3 : Alimentaire",
+        "items": [
+          {
+            "name": "Décapsuleur",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tire bouchon",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pourers",
+            "targetQuantity": 7,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Allumettes",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Allume feu bic",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Rouleau de sacs poubelle ~40L",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "tiroir_4": {
+        "title": "Tiroir 4 : Communication",
+        "items": [
+          {
+            "name": "Bracelets",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Cartes de visite",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Autocollants",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Boîte d'objets de jeu (GN)",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Étiquettes produits bois",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "tiroir_5": {
+        "title": "Tiroir 5 : Electronique + stock",
+        "items": [
+          {
+            "name": "Chargeurs sumup",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tablette + chargeur",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Chargeurs téléphone",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Piles AA / AAA",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Stock agrafes",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Stock élastiques",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_admin"
+  },
+  "classeur_admin_contents": {
+    "title": "Contenu : Classeur admin",
+    "subsections": {
+      "items": {
+        "title": "Documents administratifs",
+        "items": [
+          {
+            "name": "Affichage obligatoire alcool",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Kbis",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Certif assurance",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Petite Licence",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Carte vendeur ambulant",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "classeur_miam": {
+        "title": "Classeur miam (rouge)",
+        "items": [
+          {
+            "name": "Livret de recettes",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Liste de courses",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Fiches allergènes",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Fiche de produits équipe / cadeaux / pertes",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": "1/jour"
+          }
+        ]
+      }
+    },
+    "boxId": "classeur_admin"
+  },
+  "caisse_divers_deco_contents": {
+    "title": "Contenu : Caisse divers déco",
+    "subsections": {
+      "items": {
+        "title": "Décorations",
+        "items": [
+          {
+            "name": "Porte étiquettes dans une boîte",
+            "targetQuantity": 20,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Panières de présentation rondes en osier et leurs charlottes tissu",
+            "targetQuantity": 4,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": "8 charlottes"
+          },
+          {
+            "name": "Champignons bois",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Animaux marins en crochet",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Serre têtes cornes",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Présentoir à bouteilles",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Lutrin bois",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Planche bois présentation",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Guirlandes de led",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Boules lumineuses",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Mandragore",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Lampes balmora",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Écorces",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_divers_deco"
+  },
+  "caisse_fixations_deco_contents": {
+    "title": "Contenu : Caisse \"fixations déco\"",
+    "subsections": {
+      "items": {
+        "title": "Fixations",
+        "items": [
+          {
+            "name": "Pinces décor",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pinces fixation rouges",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Crochets S (dans un tupp)",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_fixations_deco"
+  },
+  "caisse_electricite_lumiere_contents": {
+    "title": "Contenu : Caisse Electricité / Lumière",
+    "subsections": {
+      "items": {
+        "title": "Matériel électrique",
+        "items": [
+          {
+            "name": "Enrouleur électrique 15m",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Prises multiple 5 prises",
+            "targetQuantity": 3,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Spot",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Rallonges",
+            "targetQuantity": 2,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Lampes flamme",
+            "targetQuantity": 4,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_electricite_lumiere"
+  },
+  "caisse_brico1_contents": {
+    "title": "Contenu : Brico 1 (mallette à outils)",
+    "subsections": {
+      "items": {
+        "title": "Outils",
+        "items": [
+          {
+            "name": "Cutter",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Marteau",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tournevis à embouts",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pince coupante",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pince multiprise",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Embouts de visseuse / tournevis",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Scotch transparent",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Gaffeur/Ducttape",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pack de serflex",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Bobine de ficelle",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_brico1"
+  },
+  "caisse_brico2_contents": {
+    "title": "Contenu : Caisse brico 2",
+    "subsections": {
+      "items": {
+        "title": "Matériel de bricolage",
+        "items": [
+          {
+            "name": "Visseuse",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Embouts brosse vaisselle visseuse",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Maillet",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pot de peinture noire (ardoises)",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pinceau",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Rubalise",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Boite de vis / clous",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Boîte de mousquetons",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Rouleau de fil de fer",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Sandow",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_brico2"
+  },
+  "caisse_pharmacie_contents": {
+    "title": "Contenu : Caisse Pharmacie",
+    "subsections": {
+      "items": {
+        "title": "Matériel médical",
+        "items": [
+          {
+            "name": "Boite de doigtiers",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Désinfectant",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Boite de pansements",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pack de steristrips",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Boite de compeed",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Bandes",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Paire de ciseaux",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pince à épiler",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pince à tiques",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pack de tulle gras",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tube de biafine",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Baume du tigre",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Rouleau de sparadrap",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tube crème solaire",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tube de crème muscles",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Sérum phy",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Boite de compresses",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Sac de cotons",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_pharmacie"
+  },
+  "caisse_hygiene_contents": {
+    "title": "Contenu : Caisse Hygiène",
+    "subsections": {
+      "items": {
+        "title": "Produits d'hygiène",
+        "items": [
+          {
+            "name": "Bouteilles de liquide vaisselle",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pads / éponges",
+            "targetQuantity": 6,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pad grattant",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Gratt gratt vert",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Flacon de gel hydroalcoolique",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Savon mains",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pailles de fer",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Rouleau de sacs poubelle 100+L",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Rouleau de sacs poubelle ~50L",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pschit de spray nettoyant cuisine",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Rouleaux de PQ",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Boîte de masques",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_hygiene"
+  },
+  "caisse_tissus_contents": {
+    "title": "Contenu : Caisse Tissus",
+    "subsections": {
+      "items": {
+        "title": "Textiles",
+        "items": [
+          {
+            "name": "Nappes coton enduit bleu à motifs",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Nappes écru traitées déperlantes",
+            "targetQuantity": 4,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Nappes blanches",
+            "targetQuantity": 4,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Toiles cirées",
+            "targetQuantity": 4,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Fond de stand toile marron",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Cache pieds toile de jute et leurs lacets",
+            "targetQuantity": 4,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tissus bleus cache - bazar",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tabliers bordeaux",
+            "targetQuantity": 6,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Tabliers jean Sophie & Val",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_tissus"
+  },
+  "caisse_torchons_contents": {
+    "title": "Contenu : Caisse Torchons",
+    "subsections": {
+      "items": {
+        "title": "Textiles de service",
+        "items": [
+          {
+            "name": "Torchons",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": "2/personne/jour"
+          },
+          {
+            "name": "Lavettes",
+            "targetQuantity": 12,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Sac à linge sale",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_torchons"
+  },
+  "malle_ustensiles_contents": {
+    "title": "Contenu : Malle ustensiles (verte)",
+    "subsections": {
+      "items": {
+        "title": "Ustensiles de cuisine",
+        "items": [
+          {
+            "name": "Petites planches à découper",
+            "targetQuantity": 5,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Grandes planches à découper",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Rames",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": "+1 Dé'K'dents"
+          },
+          {
+            "name": "Grandes spatules",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Saladiers",
+            "targetQuantity": 4,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Ecumoires",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Rouleau à pâtisserie",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Mini bac gastro",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Petits couvercles de gastro",
+            "targetQuantity": 4,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Plats métal",
+            "targetQuantity": 3,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Torpille",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Louchasse ⌀14 - 55cl",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Grande louche ⌀12 - 35cl",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Louches ⌀10 - 25cl",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Louchette ⌀8 - 10cl",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Louchinette ⌀6 - 5cl",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Maniques",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Moufles ignifugées",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Malette à couteaux",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Hachoir à main / ressort",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Râpe",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Coupe pommes",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Presse purée",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Ento-rouges",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Boîte de 12 emporte pièces",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "malle_ustensiles"
+  },
+  "caisse_petits_ustensiles_contents": {
+    "title": "Contenu : Caisse petits ustensiles",
+    "subsections": {
+      "items": {
+        "title": "Petits ustensiles",
+        "items": [
+          {
+            "name": "Spatules",
+            "targetQuantity": 2,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Epluche légumes",
+            "targetQuantity": 4,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Ouvre-boîtes",
+            "targetQuantity": 2,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Fouet",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Allume gaz à flamme",
+            "targetQuantity": 2,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pinces alimentaires",
+            "targetQuantity": 4,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Paire de ciseaux",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Clé à bocaux",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Allume gaz",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Grandes cuillers",
+            "targetQuantity": 5,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Fourchettes",
+            "targetQuantity": 5,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Petites cuillères",
+            "targetQuantity": 5,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_petits_ustensiles"
+  },
+  "electromenager_kitchenaid_contents": {
+    "title": "Contenu : Electroménager + Kitchenaid",
+    "subsections": {
+      "kitchenaid": {
+        "title": "Kitchenaid + accessoires",
+        "items": [
+          {
+            "name": "Kitchenaid",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Bol",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Fouet + crochet + feuille",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Robot de découpe bas + haut + poussoir",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Boite de lames robot",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      },
+      "electromenager": {
+        "title": "Électroménager",
+        "items": [
+          {
+            "name": "Bouilloire",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Mixeur plongeant",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Hachoir électrique rouge",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Balance",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "electromenager_kitchenaid"
+  },
+  "caisse_chauffe_consommables_cuisine_contents": {
+    "title": "Contenu : Caisse chauffe + consommables cuisine",
+    "subsections": {
+      "items": {
+        "title": "Matériel de cuisson et consommables",
+        "items": [
+          {
+            "name": "Papier alu",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Papier cuisson",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Film alimentaire",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Détendeurs propane cube",
+            "targetQuantity": 3,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Flexibles gaz",
+            "targetQuantity": 3,
+            "isMinimumQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Détendeur bouteille (!= cube)",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Extincteur",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pieds de brûleurs (si démontés)",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Pare-vents",
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_chauffe_consommables_cuisine"
+  },
+  "caisse_cafe_contents": {
+    "title": "Contenu : Caisse Café",
+    "subsections": {
+      "items": {
+        "title": "Matériel café",
+        "items": [
+          {
+            "name": "Perco",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Thermos",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_cafe"
+  },
+  "caisse_couverts_contents": {
+    "title": "Contenu : Caisse couverts",
+    "subsections": {
+      "items": {
+        "title": "Couverts et présentation",
+        "items": [
+          {
+            "name": "Présentoir à couverts",
+            "targetQuantity": 1,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Fourchettes jetables",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Couteaux jetables",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Grandes Cuillères jetables",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Petites Cuillères jetables",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Touillettes jetables",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_couverts"
+  },
+  "caisse_consommables_service_contents": {
+    "title": "Contenu : Caisse consommables service",
+    "subsections": {
+      "items": {
+        "title": "Consommables de service",
+        "items": [
+          {
+            "name": "Présentoirs à serviettes",
+            "targetQuantity": 2,
+            "isMinimumQuantity": false,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Gobelets 25cl",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Gobelets 10cl",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          },
+          {
+            "name": "Sacs de vente",
+            "variableQuantity": true,
+            "currentQuantity": null,
+            "status": null,
+            "inTruck": false,
+            "note": ""
+          }
+        ]
+      }
+    },
+    "boxId": "caisse_consommables_service"
+  }
+}

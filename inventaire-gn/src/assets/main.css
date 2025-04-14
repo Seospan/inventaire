@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded font-medium focus:outline-none focus:ring-2 transition-colors;
+  }
+  
+  .btn-primary {
+    @apply bg-blue-500 hover:bg-blue-600 text-white focus:ring-blue-300;
+  }
+
+  .btn-success {
+    @apply bg-status-present hover:bg-green-600 text-white focus:ring-green-300;
+  }
+  
+  .card {
+    @apply rounded-lg shadow-md bg-white dark:bg-gray-800 p-4;
+  }
+}

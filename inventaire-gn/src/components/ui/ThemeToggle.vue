@@ -1,93 +1,22 @@
 <template>
-    <div class="theme-toggle">
-      <button class="theme-toggle-btn" @click="toggleTheme">
-        <span v-if="isDarkTheme">☀️</span>
-        <span v-else>🌙</span>
-      </button>
-    </div>
+    <button @click="toggleTheme" class="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300" :title="isDark ? 'Passer au thème clair' : 'Passer au thème sombre'">
+      <svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg>
+      <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+      </svg>
+    </button>
   </template>
   
-  <script>
-  export default {
-    name: 'ThemeToggle',
-    data() {
-      return {
-        isDarkTheme: false
-      }
-    },
-    mounted() {
-      // Vérifier le thème précédemment sauvegardé
-      const savedTheme = localStorage.getItem('theme');
-
-      if (savedTheme) {
-            // Utiliser le thème sauvegardé
-            this.isDarkTheme = savedTheme === 'dark';
-        } else {
-            // Sinon, utiliser les préférences système
-            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            this.isDarkTheme = prefersDark;
-        }
-        
-        // Appliquer le thème
-        if (this.isDarkTheme) {
-            document.body.classList.add('dark-theme');
-        }
-        
-        // Écouter les changements de préférence système
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (!localStorage.getItem('theme')) { // Ne pas écraser le choix manuel
-            this.isDarkTheme = event.matches;
-            document.body.classList.toggle('dark-theme', this.isDarkTheme);
-            }
-        });
-    
-      /*if (savedTheme === 'dark') {
-        this.isDarkTheme = true;
-        document.body.classList.add('dark-theme');
-      }*/
-    },
-    methods: {
-      toggleTheme() {
-        this.isDarkTheme = !this.isDarkTheme;
-        
-        if (this.isDarkTheme) {
-          document.body.classList.add('dark-theme');
-          localStorage.setItem('theme', 'dark');
-        } else {
-          document.body.classList.remove('dark-theme');
-          localStorage.setItem('theme', 'light');
-        }
-      }
-    }
-  }
+  <script setup>
+  defineProps({
+    isDark: Boolean
+  });
+  
+  const emit = defineEmits(['toggle']);
+  
+  const toggleTheme = () => {
+    emit('toggle');
+  };
   </script>
-  
-  <style scoped>
-  .theme-toggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-  }
-  
-  .theme-toggle-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    box-shadow: 0 2px 5px var(--shadow-color);
-    transition: all 0.3s ease;
-  }
-  
-  .theme-toggle-btn:hover {
-    transform: scale(1.1);
-    background-color: var(--primary-light);
-  }
-  </style>
