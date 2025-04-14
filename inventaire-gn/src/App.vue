@@ -47,7 +47,7 @@ onMounted(async () => {
     try {
       // Importation du fichier JSON statique
       // Cette approche fonctionne avec Vite
-      const defaultData = await import('../matos_updated.json');
+      const defaultData = await import('../matos_v3.json');
       saveData(defaultData.default);
     } catch (error) {
       console.error("Erreur lors du chargement du fichier JSON", error);

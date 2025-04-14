@@ -82,6 +82,14 @@
                         </span>
                       </div>
                       
+                      <!-- Barre de progression pour les box -->
+                      <div v-if="item.isBox && hasBoxContents(item)" class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                        <div 
+                          class="bg-status-present h-1.5 rounded-full" 
+                          :style="{ width: getBoxCompletionPercentage(item) + '%' }"
+                        ></div>
+                      </div>
+                      
                       <!-- Gestion des quantités -->
                       <div v-if="item.targetQuantity || item.variableQuantity" class="mt-1 flex items-center">
                         <label class="text-sm mr-2">Quantité:</label>
@@ -108,13 +116,30 @@
                   
                   <!-- Actions -->
                   <div class="flex items-center space-x-2">
-                    <!-- Bouton OK pour marquer comme présent -->
+                    <!-- Bouton pour marquer comme présent (standard pour tous les éléments) -->
                     <button 
-                      v-if="!item.status"
+                      v-if="!item.isBox || (item.isBox && !hasBoxContents(item))"
                       @click.stop="$emit('mark-present', item)"
-                      class="px-2 py-1 bg-status-present text-white rounded-md text-sm"
+                      class="p-1 bg-status-present text-white rounded-md text-sm"
+                      :disabled="item.status === 'present'"
+                      :class="{'opacity-50': item.status === 'present'}"
                     >
-                      OK
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </button>
+                    
+                    <!-- Bouton pour marquer comme dans le camion -->
+                    <button 
+                      @click.stop="$emit('update-status', item, 'in-truck')" 
+                      class="p-1 bg-status-in-truck text-white rounded-md text-sm"
+                      :disabled="item.status === 'in-truck'"
+                      :class="{'opacity-50': item.status === 'in-truck'}"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                      </svg>
                     </button>
                     
                     <!-- Bouton pour ouvrir la modale de note -->
@@ -135,9 +160,9 @@
                         class="p-1 rounded-md"
                         :class="item.status ? getStatusClass(item.status) : 'bg-gray-200 dark:bg-gray-700'"
                       >
-                        <span class="text-xs text-white px-1">
-                          {{ getStatusLabel(item.status).substring(0, 3) }}...
-                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                        </svg>
                       </button>
                       
                       <!-- Dropdown du menu de statut -->
@@ -170,35 +195,33 @@
                   v-if="item.isBox && item.contents && expandedBoxes.includes(item.boxId) && hasBoxContents(item)" 
                   class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700"
                 >
-                  <!-- Résumé du statut -->
+                  <!-- Résumé des statuts et barre de progression -->
                   <div class="mb-3 p-2 bg-gray-100 dark:bg-gray-700 rounded-md text-sm">
-                    <div class="font-medium mb-1">Statut des éléments</div>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      <div v-for="(count, status) in getBoxContentStatusCounts(item)" :key="status" class="flex items-center">
-                        <div 
-                          class="w-3 h-3 rounded-full mr-2" 
-                          :class="getStatusClass(status === 'null' ? null : status)"
-                        ></div>
-                        <span>{{ getStatusLabel(status === 'null' ? null : status) }}: {{ count }}</span>
+                    <div class="flex justify-between items-center mb-2">
+                      <div class="font-medium">
+                        {{ getBoxCompletedCount(item) }}/{{ getBoxItemCount(item) }} éléments vérifiés
+                      </div>
+                      <div>
+                        {{ getBoxCompletionPercentage(item) }}%
                       </div>
                     </div>
-                  </div>
-                  
-                  <!-- Actions de groupe pour la box -->
-                  <div class="mb-3 flex flex-wrap gap-2">
-                    <button 
-                      @click.stop="$emit('mark-all-present', item.boxId)" 
-                      class="px-2 py-1 bg-status-present text-white rounded-md text-sm"
-                    >
-                      Tout marquer présent
-                    </button>
                     
-                    <button 
-                      @click.stop="$emit('mark-all-in-truck', item.boxId)" 
-                      class="px-2 py-1 bg-status-in-truck text-white rounded-md text-sm"
-                    >
-                      Tout marquer dans camion
-                    </button>
+                    <!-- Actions de groupe pour la box -->
+                    <div class="flex flex-wrap gap-2">
+                      <button 
+                        @click.stop="$emit('mark-all-present', item.boxId)" 
+                        class="px-2 py-1 bg-status-present text-white rounded-md text-xs"
+                      >
+                        Tout marquer présent
+                      </button>
+                      
+                      <button 
+                        @click.stop="$emit('mark-all-in-truck', item.boxId)" 
+                        class="px-2 py-1 bg-status-in-truck text-white rounded-md text-xs"
+                      >
+                        Tout marquer dans camion
+                      </button>
+                    </div>
                   </div>
                   
                   <!-- Sous-sections de la box -->
@@ -244,13 +267,28 @@
                           
                           <!-- Actions -->
                           <div class="flex items-center space-x-2">
-                            <!-- Bouton OK pour marquer comme présent -->
+                            <!-- Action buttons with consistent styling -->
                             <button 
-                              v-if="!contentItem.status"
                               @click.stop="$emit('mark-present', contentItem)"
-                              class="px-2 py-1 bg-status-present text-white rounded-md text-sm"
+                              class="p-1 bg-status-present text-white rounded-md text-sm"
+                              :disabled="contentItem.status === 'present'"
+                              :class="{'opacity-50': contentItem.status === 'present'}"
                             >
-                              OK
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                              </svg>
+                            </button>
+                            
+                            <button 
+                              @click.stop="$emit('update-status', contentItem, 'in-truck')" 
+                              class="p-1 bg-status-in-truck text-white rounded-md text-sm"
+                              :disabled="contentItem.status === 'in-truck'"
+                              :class="{'opacity-50': contentItem.status === 'in-truck'}"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                              </svg>
                             </button>
                             
                             <!-- Bouton pour ouvrir la modale de note -->
@@ -264,26 +302,6 @@
                               </svg>
                             </button>
                             
-                            <!-- Actions rapides de statut -->
-                            <div class="flex space-x-1">
-                              <button 
-                                @click.stop="$emit('update-status', contentItem, 'present')" 
-                                class="px-2 py-0.5 bg-status-present text-white rounded-md text-xs"
-                                :class="{'opacity-50': contentItem.status === 'present'}"
-                                :disabled="contentItem.status === 'present'"
-                              >
-                                ✓
-                              </button>
-                              <button 
-                                @click.stop="$emit('update-status', contentItem, 'in-truck')" 
-                                class="px-2 py-0.5 bg-status-in-truck text-white rounded-md text-xs"
-                                :class="{'opacity-50': contentItem.status === 'in-truck'}"
-                                :disabled="contentItem.status === 'in-truck'"
-                              >
-                                🚚
-                              </button>
-                            </div>
-                            
                             <!-- Menu de statut -->
                             <div class="relative">
                               <button 
@@ -291,9 +309,9 @@
                                 class="p-1 rounded-md"
                                 :class="contentItem.status ? getStatusClass(contentItem.status) : 'bg-gray-200 dark:bg-gray-700'"
                               >
-                                <span class="text-xs text-white px-1">
-                                  {{ getStatusLabel(contentItem.status).substring(0, 3) }}...
-                                </span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                </svg>
                               </button>
                               
                               <!-- Dropdown du menu de statut -->
@@ -340,13 +358,8 @@
                     </button>
                   </div>
                   <div class="flex flex-wrap gap-1 mt-1">
-                    <span 
-                      v-for="(status, index) in getBoxContentStatuses(item)" 
-                      :key="index"
-                      class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs"
-                      :class="getStatusClass(status)"
-                    >
-                      {{ getBoxContentStatusCount(item, status) }}
+                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs bg-status-present text-white">
+                      {{ getBoxCompletedCount(item) }}/{{ getBoxItemCount(item) }} vérifiés
                     </span>
                   </div>
                 </div>
@@ -494,84 +507,105 @@
   };
   
   // Vérifier si une box a des éléments
-  const hasBoxContents = (box) => {
-    if (!box || !box.contents) return false;
-    
-    let hasItems = false;
-    
-    Object.keys(box.contents).forEach(subsectionKey => {
-      const subsection = box.contents[subsectionKey];
-      if (subsection.items && subsection.items.length > 0) {
-        hasItems = true;
-      }
+const hasBoxContents = (box) => {
+  if (!box || !box.contents) return false;
+  
+  let hasItems = false;
+  
+  Object.keys(box.contents).forEach(subsectionKey => {
+    const subsection = box.contents[subsectionKey];
+    if (subsection.items && subsection.items.length > 0) {
+      hasItems = true;
+    }
+  });
+
+  return hasItems;
+};
+
+// Obtenir tous les éléments contenus dans une box
+const getAllBoxItems = (box) => {
+  if (!box || !box.contents) return [];
+  
+  const allItems = [];
+  
+  Object.keys(box.contents).forEach(subsectionKey => {
+    const subsection = box.contents[subsectionKey];
+    (subsection.items || []).forEach(item => {
+      allItems.push(item);
     });
-    
-    return hasItems;
+  });
+  
+  return allItems;
+};
+
+// Compter le nombre d'éléments dans une box
+const getBoxItemCount = (box) => {
+  return getAllBoxItems(box).length;
+};
+
+// Compter le nombre d'éléments vérifiés dans une box (présent ou dans le camion)
+const getBoxCompletedCount = (box) => {
+  const items = getAllBoxItems(box);
+  if (!items || items.length === 0) return 0;
+  
+  return items.filter(item => 
+    item.status === 'present' || 
+    item.status === 'in-truck' || 
+    item.status === 'not-needed'
+  ).length;
+};
+
+// Calculer le pourcentage de complétion d'une box
+const getBoxCompletionPercentage = (box) => {
+  const items = getAllBoxItems(box);
+  if (!items || items.length === 0) return 0;
+  
+  const completed = getBoxCompletedCount(box);
+  return Math.round((completed / items.length) * 100);
+};
+
+// Obtenir la liste des statuts présents dans une box
+const getBoxContentStatuses = (box) => {
+  const items = getAllBoxItems(box);
+  if (!items || items.length === 0) return [];
+  
+  const statuses = new Set();
+  
+  items.forEach(item => {
+    statuses.add(item.status);
+  });
+  
+  return Array.from(statuses);
+};
+
+// Compter le nombre d'éléments avec un statut spécifique dans une box
+const getBoxContentStatusCount = (box, status) => {
+  const items = getAllBoxItems(box);
+  if (!items || items.length === 0) return 0;
+  
+  return items.filter(item => item.status === status).length;
+};
+
+// Calculer le nombre d'éléments par statut dans une box
+const getBoxContentStatusCounts = (box) => {
+  const counts = {
+    'null': 0,
+    'present': 0,
+    'to-find': 0,
+    'to-buy': 0,
+    'to-repair': 0,
+    'not-needed': 0,
+    'in-truck': 0
   };
   
-  // Obtenir tous les éléments contenus dans une box
-  const getAllBoxItems = (box) => {
-    if (!box || !box.contents) return [];
-    
-    const allItems = [];
-    
-    Object.keys(box.contents).forEach(subsectionKey => {
-      const subsection = box.contents[subsectionKey];
-      (subsection.items || []).forEach(item => {
-        allItems.push(item);
-      });
-    });
-    
-    return allItems;
-  };
+  const items = getAllBoxItems(box);
+  if (!items || items.length === 0) return counts;
   
-  // Compter le nombre d'éléments dans une box
-  const getBoxItemCount = (box) => {
-    return getAllBoxItems(box).length;
-  };
+  items.forEach(item => {
+    const status = item.status === null ? 'null' : item.status;
+    counts[status] = (counts[status] || 0) + 1;
+  });
   
-  // Obtenir la liste des statuts présents dans une box
-  const getBoxContentStatuses = (box) => {
-    const items = getAllBoxItems(box);
-    if (!items || items.length === 0) return [];
-    
-    const statuses = new Set();
-    
-    items.forEach(item => {
-      statuses.add(item.status);
-    });
-    
-    return Array.from(statuses);
-  };
-  
-  // Compter le nombre d'éléments avec un statut spécifique dans une box
-  const getBoxContentStatusCount = (box, status) => {
-    const items = getAllBoxItems(box);
-    if (!items || items.length === 0) return 0;
-    
-    return items.filter(item => item.status === status).length;
-  };
-  
-  // Calculer le nombre d'éléments par statut dans une box
-  const getBoxContentStatusCounts = (box) => {
-    const counts = {
-      'null': 0,
-      'present': 0,
-      'to-find': 0,
-      'to-buy': 0,
-      'to-repair': 0,
-      'not-needed': 0,
-      'in-truck': 0
-    };
-    
-    const items = getAllBoxItems(box);
-    if (!items || items.length === 0) return counts;
-    
-    items.forEach(item => {
-      const status = item.status === null ? 'null' : item.status;
-      counts[status] = (counts[status] || 0) + 1;
-    });
-    
-    return counts;
-  };
-  </script>
+  return counts;
+};
+</script>
