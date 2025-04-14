@@ -51,7 +51,9 @@
         @mark-present="markItemPresent"
         @open-note="openNoteModal"
         @save="saveInventory"
-        @show-box-contents="showBoxContents"
+        @mark-all-present="markAllBoxItemsPresent"
+        @mark-all-in-truck="markAllBoxItemsInTruck"
+        @navigate-to-box="navigateToBox"
       />
       
       <!-- Modal de note -->
@@ -65,21 +67,6 @@
       
       <!-- Modal de célébration -->
       <CelebrationModal :active="celebrationActive" />
-      
-      <!-- Modal de contenu de box -->
-      <BoxContentsModal 
-        :active="boxModalActive" 
-        :boxId="currentBoxId"
-        :boxName="currentBoxName"
-        :contents="currentBoxContents"
-        :getStatusLabel="getStatusLabel"
-        :getStatusClass="getStatusClass"
-        @close="closeBoxModal"
-        @navigate-to-box="navigateToBox"
-        @update-status="updateBoxItemStatus"
-        @mark-all-present="markAllBoxItemsPresent"
-        @mark-all-in-truck="markAllBoxItemsInTruck"
-      />
       
       <!-- Notifications Toast -->
       <Toast :active="toastActive" :message="toastMessage" :type="toastType" />
@@ -120,19 +107,12 @@
   import { useStorage } from '../../composables/useStorage';
   import { prepareInventoryData, validateInventoryData } from '../../utils/initData';
   
-  // États pour la modal de box
-  const boxModalActive = ref(false);
-  const currentBoxId = ref('');
-  const currentBoxName = ref('');
-  const currentBoxContents = ref([]);
-  
   import ProgressSection from './ProgressSection.vue';
   import StatusFilter from './StatusFilter.vue';
   import FilteredView from './FilteredView.vue';
   import InventorySections from './InventorySections.vue';
   import NoteModal from '../ui/NoteModal.vue';
   import CelebrationModal from '../ui/CelebrationModal.vue';
-  import BoxContentsModal from '../ui/BoxContentsModal.vue';
   import Toast from '../ui/Toast.vue';
   
   // Récupération des composables
@@ -146,6 +126,9 @@
   } = useInventory();
   
   const { exportData, importData, clearData } = useStorage();
+  
+  // État pour le type de toast
+  const toastType = ref('info');
   
   // Chargement des données au démarrage
   onMounted(async () => {
@@ -289,23 +272,13 @@
     }
   };
   
-  // Nettoyage à la destruction du composant
-  onUnmounted(() => {
-    document.removeEventListener('click', handleDocumentClick);
-  });
-  
-  // État pour le type de toast
-  const toastType = ref('info');// Mettre à jour le statut d'un élément depuis la modal de box
+  // Mettre à jour le statut d'un élément depuis la vue box
   const updateBoxItemStatus = (item, status) => {
     updateItemStatus(item, status);
     
-    // Rafraîchir la liste des éléments de la box
-    if (currentBoxId.value) {
-      const updatedContents = findBoxContents(currentBoxId.value);
-      currentBoxContents.value = updatedContents;
-      
-      // Vérifier si la box elle-même devrait être mise à jour
-      updateBoxStatusFromContents(currentBoxId.value);
+    // Vérifier si la box elle-même devrait être mise à jour
+    if (item.boxId) {
+      updateBoxStatusFromContents(item.boxId);
     }
   };
   
@@ -318,9 +291,6 @@
         updateItemStatus(item, STATUS.PRESENT);
       }
     });
-    
-    // Rafraîchir la liste des éléments de la box
-    currentBoxContents.value = findBoxContents(boxId);
     
     // Mettre à jour le statut de la box elle-même
     updateBoxStatusFromContents(boxId);
@@ -338,27 +308,10 @@
       }
     });
     
-    // Rafraîchir la liste des éléments de la box
-    currentBoxContents.value = findBoxContents(boxId);
-    
     // Mettre à jour le statut de la box elle-même
     updateBoxStatusFromContents(boxId);
     
     showToast('Tous les éléments ont été marqués comme dans le camion');
-  };// Ouvrir la modal de contenu de box
-  const showBoxContents = (boxId, boxName, contents) => {
-    currentBoxId.value = boxId;
-    currentBoxName.value = boxName;
-    currentBoxContents.value = contents;
-    boxModalActive.value = true;
-    
-    // Vérifier si on a besoin de mettre à jour le statut de la box
-    updateBoxStatusFromContents(boxId);
-  };
-  
-  // Fermer la modal de contenu de box
-  const closeBoxModal = () => {
-    boxModalActive.value = false;
   };
   
   // Naviguer vers la section contenant la box
@@ -386,4 +339,9 @@
       toggleSection(foundSectionKey);
     }
   };
+  
+  // Nettoyage à la destruction du composant
+  onUnmounted(() => {
+    document.removeEventListener('click', handleDocumentClick);
+  });
   </script>
