@@ -70,11 +70,8 @@ const showResetConfirm = ref(false);
 
 // Methods
 const confirmReset = () => {
-  console.log('Confirm reset called, disabled:', props.resetDisabled);
-  console.log('Current showResetConfirm value:', showResetConfirm.value);
   if (!props.resetDisabled) {
     showResetConfirm.value = true;
-    console.log('Set showResetConfirm to:', showResetConfirm.value);
   }
 };
 
