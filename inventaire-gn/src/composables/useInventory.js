@@ -56,7 +56,10 @@ export function useInventory() {
   
   // Sauvegarde de l'inventaire
   const saveInventory = () => {
-    return saveData(inventory.value);
+    console.log('Saving inventory to storage...');
+    const result = saveData(inventory.value);
+    console.log('Inventory saved:', result);
+    return result;
   };
   
   // Mise à jour du statut d'un élément
@@ -66,10 +69,12 @@ export function useInventory() {
       item.status = status;
       
       // Si le statut change pour "in-truck", mettre également inTruck à true
-      if (status === STATUS.IN_TRUCK && props.hideInTruck) {
-        showToast('Le chargement dans le camion se fait dans la page dédiée', 'info');
-        return;
+      if (status === STATUS.IN_TRUCK) {
+        item.inTruck = true;
+      } else if (status === STATUS.PRESENT) {
+        item.inTruck = false;
       }
+
       saveInventory();
       
       // Notification de succès
