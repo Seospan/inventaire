@@ -89,31 +89,12 @@
     <Toast :active="toastActive" :message="toastMessage" :type="toastType" />
     
     <!-- Actions globales -->
-    <div class="fixed bottom-4 left-4 flex flex-col space-y-2">
-      <!-- Bouton d'import -->
-      <label class="btn btn-primary flex items-center cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0l-4 4m4-4v12" />
-        </svg>
-        <span>Importer</span>
-        <input type="file" class="hidden" @change="importInventory($event)" accept=".json">
-      </label>
-      
-      <!-- Bouton d'export -->
-      <button @click="exportInventory" class="btn btn-primary flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-        </svg>
-        <span>Exporter</span>
-      </button>
-      
-      <!-- Bouton de réinitialisation -->
-      <button @click="resetInventory" class="btn bg-red-500 hover:bg-red-600 text-white flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-        </svg>
-        <span>Réinitialiser</span>
-      </button>
+    <div class="fixed bottom-4 left-4 z-50">
+      <ActionButtons 
+        @import="handleImportClick"
+        @export="exportInventory"
+        @reset="resetInventory"
+      />
     </div>
   </div>
 </template>
@@ -124,6 +105,8 @@ import { useInventory } from '../../composables/useInventory';
 import { useStorage } from '../../composables/useStorage';
 import { useBoxManagement } from '../../composables/useBoxManagement';
 import { prepareInventoryData, validateInventoryData } from '../../utils/initData';
+
+import ActionButtons from './actions/ActionButtons.vue';
 
 // Components
 import ProgressSection from './ProgressSection.vue';
@@ -407,17 +390,30 @@ const handleDocumentClick = (event) => {
 
 // Réinitialisation de l'inventaire
 const resetInventory = () => {
-  if (confirm('Êtes-vous sûr de vouloir réinitialiser l\'inventaire ? Toutes les données seront perdues.')) {
-    // Supprimer les données du localStorage
-    clearData();
-    
-    // Réinitialiser l'inventaire avec les données vides
-    import('../../utils/initData').then(module => {
-      inventory.value = module.getDefaultInventoryData();
-      saveInventory();
-      showToast('Inventaire réinitialisé');
-    });
-  }
+  console.log('Reset inventory method called');
+  // Supprimer les données du localStorage
+  clearData();
+  
+  // Réinitialiser l'inventaire avec les données vides
+  import('../../utils/initData').then(module => {
+    inventory.value = module.getDefaultInventoryData();
+    saveInventory();
+    showToast('Inventaire réinitialisé');
+  });
+};
+
+// Add this method to your script setup section
+const fileInputRef = ref(null);
+
+const handleImportClick = () => {
+  // Create a temporary file input
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = (event) => importInventory(event);
+  
+  // Trigger the file dialog
+  input.click();
 };
 
 // Nettoyage à la destruction du composant
