@@ -17,7 +17,7 @@
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Préparation des données pour l'application</p>
       </div>
       
-      <InventoryManager v-if="!isLoading" />
+      <router-view v-if="!isLoading" />
     </main>
   </div>
 </template>
@@ -26,7 +26,6 @@
 import { ref, onMounted } from 'vue';
 import { useTheme } from './composables/useTheme';
 import ThemeToggle from './components/ui/ThemeToggle.vue';
-import InventoryManager from './components/inventory/InventoryManager.vue';
 import { useStorage } from './composables/useStorage';
 
 // Gestion du thème
