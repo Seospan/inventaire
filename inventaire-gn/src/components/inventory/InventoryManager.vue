@@ -24,6 +24,7 @@
       :inTruckCount="metrics.inTruck"
       :presentCount="metrics.present"
       :nullCount="metrics.total - (metrics.present + metrics.toFind + metrics.toBuy + metrics.toRepair + metrics.notNeeded + metrics.inTruck)"
+      :hideInTruck="hideInTruck"
       @change-filter="setCurrentFilter"
     />
     
@@ -143,6 +144,14 @@ const {
 
 const { exportData, importData, clearData } = useStorage();
 const { expandedBoxes, toggleBoxExpand, getAllBoxItems } = useBoxManagement();
+
+// Props
+const props = defineProps({
+  hideInTruck: {
+    type: Boolean,
+    default: false
+  }
+});
 
 // Chargement des données au démarrage
 onMounted(async () => {

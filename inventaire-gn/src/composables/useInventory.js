@@ -66,13 +66,10 @@ export function useInventory() {
       item.status = status;
       
       // Si le statut change pour "in-truck", mettre également inTruck à true
-      if (status === STATUS.IN_TRUCK) {
-        item.inTruck = true;
-      } else if (oldStatus === STATUS.IN_TRUCK) {
-        // Si on quitte le statut "in-truck", remettre inTruck à false
-        item.inTruck = false;
+      if (status === STATUS.IN_TRUCK && props.hideInTruck) {
+        showToast('Le chargement dans le camion se fait dans la page dédiée', 'info');
+        return;
       }
-      
       saveInventory();
       
       // Notification de succès
