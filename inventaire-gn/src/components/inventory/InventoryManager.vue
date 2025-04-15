@@ -1,34 +1,14 @@
+<!-- src/components/inventory/InventoryManager.vue -->
 <template>
-    <div>
-      <!-- Barre de progression -->
-      <ProgressSection 
-        :progress="metrics.progress"
-        :presentCount="metrics.present"
-        :toFindCount="metrics.toFind"
-        :toBuyCount="metrics.toBuy"
-        :toRepairCount="metrics.toRepair"
-        :inTruckCount="metrics.inTruck"
-        :notNeededCount="metrics.notNeeded"
-        :boxCount="metrics.boxCount"
-        :boxContentCount="metrics.boxContentCount"
-      />
-      
-      <!-- Filtres par statut -->
+  <div>
+    <ProgressSection :metrics="metrics" />
       <StatusFilter 
         :currentFilter="currentFilter"
-        :toFindCount="metrics.toFind"
-        :toBuyCount="metrics.toBuy"
-        :toRepairCount="metrics.toRepair"
-        :notNeededCount="metrics.notNeeded"
-        :inTruckCount="metrics.inTruck"
-        :presentCount="metrics.present"
-        :nullCount="metrics.total - (metrics.present + metrics.toFind + metrics.toBuy + metrics.toRepair + metrics.notNeeded + metrics.inTruck)"
+      :metrics="metrics"
         @change-filter="setCurrentFilter"
       />
       
-      <!-- Vue filtrée par statut -->
-      <FilteredView 
-        v-if="currentFilter !== 'all'"
+    <FilteredView v-if="currentFilter !== 'all'"
         :filteredItems="filteredItems"
         :currentFilter="currentFilter"
         :getStatusLabel="getStatusLabel"
@@ -37,72 +17,33 @@
         @change-status="openStatusDropdown"
       />
       
-      <!-- Vue principale des sections -->
-      <InventorySections 
-        v-if="currentFilter === 'all'"
+    <InventorySections v-if="currentFilter === 'all'"
         :inventory="inventory"
         :openSections="openSections"
         :activeStatusDropdown="activeStatusDropdown"
-        :getStatusLabel="getStatusLabel"
-        :getStatusClass="getStatusClass"
-        @toggle-section="toggleSection"
-        @toggle-status="toggleStatusDropdown"
-        @update-status="updateItemStatus"
-        @mark-present="markItemPresent"
-        @open-note="openNoteModal"
-        @save="saveInventory"
-        @mark-all-present="markAllBoxItemsPresent"
-        @mark-all-in-truck="markAllBoxItemsInTruck"
-        @navigate-to-box="navigateToBox"
+      v-bind="sectionProps"
+      v-on="sectionEvents"
       />
       
-      <!-- Modal de note -->
-      <NoteModal 
-        :active="noteModalActive"
-        :note="currentNote"
-        :title="currentItem ? currentItem.name : ''"
-        @close="closeNoteModal"
-        @save="saveNote"
+    <ModalContainer
+      :noteModal="noteModalState"
+      :celebrationActive="celebrationActive"
+      :boxModal="boxModalState"
+      :toast="toastState"
+      v-bind="modalProps"
+      v-on="modalEvents"
       />
       
-      <!-- Modal de célébration -->
-      <CelebrationModal :active="celebrationActive" />
-      
-      <!-- Notifications Toast -->
-      <Toast :active="toastActive" :message="toastMessage" :type="toastType" />
-      
-      <!-- Actions globales -->
-      <div class="fixed bottom-4 left-4 flex flex-col space-y-2">
-        <!-- Bouton d'import -->
-        <label class="btn btn-primary flex items-center cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0l-4 4m4-4v12" />
-          </svg>
-          <span>Importer</span>
-          <input type="file" class="hidden" @change="importInventory($event)" accept=".json">
-        </label>
-        
-        <!-- Bouton d'export -->
-        <button @click="exportInventory" class="btn btn-primary flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-          <span>Exporter</span>
-        </button>
-        
-        <!-- Bouton de réinitialisation -->
-        <button @click="resetInventory" class="btn bg-red-500 hover:bg-red-600 text-white flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-          </svg>
-          <span>Réinitialiser</span>
-        </button>
+    <ActionButtons
+      @import="importInventory"
+      @export="exportInventory"
+      @reset="resetInventory"
+    />
       </div>
-    </div>
   </template>
   
   <script setup>
-  import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
   import { useInventory } from '../../composables/useInventory';
   import { useStorage } from '../../composables/useStorage';
   import { prepareInventoryData, validateInventoryData } from '../../utils/initData';
@@ -114,6 +55,8 @@
   import NoteModal from '../ui/NoteModal.vue';
   import CelebrationModal from '../ui/CelebrationModal.vue';
   import Toast from '../ui/Toast.vue';
+import ModalContainer from './ModalContainer.vue';
+import ActionButtons from './ActionButtons.vue';
   
   // État pour le type de toast
   const toastType = ref('info');
@@ -130,6 +73,49 @@
   
   const { exportData, importData, clearData } = useStorage();
   
+// Computed properties pour les props et les events
+const sectionProps = computed(() => ({
+  getStatusLabel,
+  getStatusClass,
+}));
+
+const sectionEvents = computed(() => ({
+  'toggle-section': toggleSection,
+  'toggle-status': toggleStatusDropdown,
+  'update-status': updateItemStatus,
+  'mark-present': markItemPresent,
+  'open-note': openNoteModal,
+  'save': saveInventory,
+  'mark-all-present': markAllBoxItemsPresent,
+  'mark-all-in-truck': markAllBoxItemsInTruck,
+  'navigate-to-box': navigateToBox
+}));
+
+const noteModalState = computed(() => ({
+  active: noteModalActive.value,
+  note: currentNote.value,
+  title: currentItem.value ? currentItem.value.name : ''
+}));
+
+const toastState = computed(() => ({
+  active: toastActive.value,
+  message: toastMessage.value,
+  type: toastType.value
+}));
+
+const boxModalState = computed(() => ({
+  // Add properties for box modal if needed
+}));
+
+const modalProps = computed(() => ({
+  // Additional modal props
+}));
+
+const modalEvents = computed(() => ({
+  'close-note': closeNoteModal,
+  'save-note': saveNote
+}));
+
   // Chargement des données au démarrage
   onMounted(async () => {
     // Les données seront chargées depuis le localStorage par useInventory
