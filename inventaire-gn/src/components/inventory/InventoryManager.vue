@@ -8,7 +8,6 @@
       :toFindCount="metrics.toFind"
       :toBuyCount="metrics.toBuy"
       :toRepairCount="metrics.toRepair"
-      :inTruckCount="metrics.inTruck"
       :notNeededCount="metrics.notNeeded"
       :boxCount="metrics.boxCount"
       :boxContentCount="metrics.boxContentCount"
@@ -24,7 +23,7 @@
       :inTruckCount="metrics.inTruck"
       :presentCount="metrics.present"
       :nullCount="metrics.total - (metrics.present + metrics.toFind + metrics.toBuy + metrics.toRepair + metrics.notNeeded + metrics.inTruck)"
-      :hideInTruck="hideInTruck"
+      :hideInTruck="true"
       @change-filter="setCurrentFilter"
     />
     
@@ -83,7 +82,6 @@
       @navigate-to-box="navigateToBox"
       @update-status="updateBoxItemStatus"
       @mark-all-present="markAllBoxItemsPresent"
-      @mark-all-in-truck="markAllBoxItemsInTruck"
     />
     
     <!-- Notifications Toast -->
@@ -144,14 +142,6 @@ const {
 
 const { exportData, importData, clearData } = useStorage();
 const { expandedBoxes, toggleBoxExpand, getAllBoxItems } = useBoxManagement();
-
-// Props
-const props = defineProps({
-  hideInTruck: {
-    type: Boolean,
-    default: false
-  }
-});
 
 // Chargement des données au démarrage
 onMounted(async () => {
@@ -238,6 +228,12 @@ const getBoxById = (boxId) => {
 };
 
 const updateBoxItemStatus = (item, status) => {
+  // If trying to mark as IN_TRUCK, redirect to truck loading page
+  if (status === STATUS.IN_TRUCK) {
+    showToast('Pour charger dans le camion, utilisez la page dédiée', 'info');
+    return;
+  }
+
   updateItemStatus(item, status);
   
   if (currentBoxId.value) {
@@ -254,7 +250,7 @@ const markAllBoxItemsPresent = (boxId) => {
   const contents = getAllBoxItems(box);
   
   contents.forEach(item => {
-    if (item.status !== STATUS.PRESENT && item.status !== STATUS.NOT_NEEDED) {
+    if (item.status !== STATUS.PRESENT && item.status !== STATUS.NOT_NEEDED && item.status !== STATUS.IN_TRUCK) {
       updateItemStatus(item, STATUS.PRESENT);
     }
   });
@@ -265,26 +261,6 @@ const markAllBoxItemsPresent = (boxId) => {
   
   updateBoxStatusFromContents(boxId);
   showToast('Tous les éléments ont été marqués comme présents');
-};
-
-const markAllBoxItemsInTruck = (boxId) => {
-  const box = getBoxById(boxId);
-  if (!box) return;
-  
-  const contents = getAllBoxItems(box);
-  
-  contents.forEach(item => {
-    if (item.status !== STATUS.IN_TRUCK && item.status !== STATUS.NOT_NEEDED) {
-      updateItemStatus(item, STATUS.IN_TRUCK);
-    }
-  });
-  
-  if (useModalForBoxContents.value && boxModalActive.value) {
-    currentBoxContents.value = findBoxContents(boxId);
-  }
-  
-  updateBoxStatusFromContents(boxId);
-  showToast('Tous les éléments ont été marqués comme dans le camion');
 };
 
 const navigateToBox = (boxId) => {
@@ -412,7 +388,7 @@ const resetInventory = () => {
 };
 
 // Add this method to your script setup section
-const fileInputRef = ref(null);
+//const fileInputRef = ref(null);
 
 const handleImportClick = () => {
   // Create a temporary file input

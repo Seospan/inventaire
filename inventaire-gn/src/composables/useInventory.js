@@ -348,7 +348,7 @@ export function useInventory() {
       });
     });
     
-    // Calcul de la progression globale
+    // Calcul de la progression globale - consider both present and in-truck as "complete"
     const progress = total > 0 
       ? Math.round(((present + inTruck) / total) * 100) 
       : 0;
@@ -360,7 +360,7 @@ export function useInventory() {
       toBuy,
       toRepair,
       notNeeded,
-      inTruck,
+      inTruck, // We still track this, but won't display it in the UI
       progress,
       boxCount,
       boxContentCount

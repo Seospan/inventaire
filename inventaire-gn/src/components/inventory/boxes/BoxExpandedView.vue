@@ -20,13 +20,6 @@
           >
             Tout marquer présent
           </button>
-          
-          <button 
-            @click.stop="$emit('mark-all-in-truck', box.boxId)" 
-            class="px-2 py-1 bg-status-in-truck text-white rounded-md text-xs"
-          >
-            Tout marquer dans camion
-          </button>
         </div>
       </div>
       

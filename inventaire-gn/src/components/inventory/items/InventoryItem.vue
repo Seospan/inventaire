@@ -44,7 +44,7 @@
             <div 
               class="bg-status-present h-1.5 rounded-full" 
               :style="{ width: getBoxCompletionPercentage(item) + '%' }"
-            ></div>
+            >mmm</div>
           </div>
           
           <!-- Quantity management -->
@@ -83,19 +83,6 @@
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-        </button>
-        
-        <!-- In-truck button -->
-        <button 
-          @click.stop="$emit('update-status', [item, 'in-truck'])" 
-          class="p-1 bg-status-in-truck text-white rounded-md text-sm"
-          :disabled="item.status === 'in-truck'"
-          :class="{'opacity-50': item.status === 'in-truck'}"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
           </svg>
         </button>
         
@@ -171,13 +158,6 @@
           >
             Tout marquer présent
           </button>
-          
-          <button 
-            @click.stop="$emit('mark-all-in-truck', item.boxId)" 
-            class="px-2 py-1 bg-status-in-truck text-white rounded-md text-xs"
-          >
-            Tout marquer dans camion
-          </button>
         </div>
       </div>
       
@@ -233,19 +213,6 @@
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                </button>
-                
-                <!-- In-truck button -->
-                <button 
-                  @click.stop="$emit('update-status', [contentItem, 'in-truck'])" 
-                  class="p-1 bg-status-in-truck text-white rounded-md text-sm"
-                  :disabled="contentItem.status === 'in-truck'"
-                  :class="{'opacity-50': contentItem.status === 'in-truck'}"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
                   </svg>
                 </button>
                 
@@ -306,15 +273,6 @@
       v-else-if="item.isBox && !isBoxExpanded && hasBoxContents(item)" 
       class="mt-2 pl-2 border-t border-gray-200 dark:border-gray-700 pt-2"
     >
-      <div class="text-xs text-gray-500 dark:text-gray-400 flex justify-between items-center">
-        <span>{{ getBoxItemCount(item) }} élément(s) dans cette box</span>
-        <button 
-          @click.stop="$emit('toggle-expand', item.boxId)"
-          class="text-blue-500 hover:text-blue-700 dark:hover:text-blue-300 underline"
-        >
-          Voir le détail
-        </button>
-      </div>
       <div class="flex flex-wrap gap-1 mt-1">
         <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs bg-status-present text-white">
           {{ getBoxCompletedCount(item) }}/{{ getBoxItemCount(item) }} vérifiés

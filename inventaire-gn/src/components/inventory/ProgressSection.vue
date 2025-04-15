@@ -1,6 +1,14 @@
 <template>
     <div class="card mb-4">
-      <h2 class="text-lg font-medium mb-2">Progression</h2>
+      <div class="flex justify-between items-center mb-2">
+        <h2 class="text-lg font-medium">Progression de l'inventaire</h2>
+        <router-link 
+          to="/truck" 
+          class="text-sm bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+        >
+          Chargement Camion
+        </router-link>
+      </div>
       
       <!-- Barre de progression -->
       <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 mb-4">
@@ -34,28 +42,8 @@
         </div>
         
         <div class="flex items-center space-x-1">
-          <span class="w-3 h-3 rounded-full bg-status-in-truck"></span>
-          <span>Dans le camion: {{ inTruckCount }}</span>
-        </div>
-        
-        <div class="flex items-center space-x-1">
           <span class="w-3 h-3 rounded-full bg-status-not-needed"></span>
           <span>Non pertinent: {{ notNeededCount }}</span>
-        </div>
-      </div>
-      
-      <!-- Statistiques des boîtes -->
-      <div v-if="boxCount > 0" class="border-t border-gray-200 dark:border-gray-700 mt-2 pt-2">
-        <div class="text-sm font-medium mb-1">Boîtes et leur contenu</div>
-        <div class="grid grid-cols-2 gap-2 text-sm">
-          <div class="flex items-center space-x-1">
-            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-            <span>Boîtes: {{ boxCount }}</span>
-          </div>
-          <div class="flex items-center space-x-1">
-            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
-            <span>Éléments dans des boîtes: {{ boxContentCount }}</span>
-          </div>
         </div>
       </div>
     </div>
@@ -68,7 +56,6 @@
     toFindCount: Number,
     toBuyCount: Number,
     toRepairCount: Number,
-    inTruckCount: Number,
     notNeededCount: Number,
     boxCount: Number,
     boxContentCount: Number

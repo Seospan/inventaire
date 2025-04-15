@@ -41,13 +41,6 @@
               >
                 Tout marquer comme présent
               </button>
-              
-              <button 
-                @click="markAllAsInTruck" 
-                class="px-3 py-1 bg-status-in-truck text-white rounded-md text-sm"
-              >
-                Tout marquer comme dans le camion
-              </button>
             </div>
             
             <div class="space-y-3">
