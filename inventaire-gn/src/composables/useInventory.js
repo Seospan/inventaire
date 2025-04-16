@@ -65,6 +65,8 @@ export function useInventory() {
   // Mise à jour du statut d'un élément
   const updateItemStatus = (item, status) => {
     if (item) {
+      const isDirectBoxUpdate = item.isBox;
+
       const oldStatus = item.status;
       item.status = status;
       
@@ -75,32 +77,46 @@ export function useInventory() {
         item.inTruck = false;
       }
 
-      saveInventory();
-      
-      // Notification de succès
-      showToast(`Statut mis à jour : ${getStatusLabel(status)}`);
-      
-      // Si l'élément est associé à une box, mettre à jour le statut de la box
-      if (item.boxId) {
+      // Only update parent box if this is not a direct box update
+      if (item.boxId && !isDirectBoxUpdate) {
         const parentBox = getBoxById(item.boxId);
         if (parentBox) {
           updateBoxStatusFromContents(parentBox);
         }
       }
-      
-      // Si l'élément est une box, vérifier si tous les éléments qu'elle contient 
-      // sont également présents
-      if (item.isBox) {
-        checkBoxContents(item);
-        // Mettre à jour le statut de la box en fonction des éléments qu'elle contient
-        updateBoxStatusFromContents(item);
+
+      // If this is a box, update its contents (but only if it's a direct update)
+      if (item.isBox && isDirectBoxUpdate) {
+        updateBoxContentsStatus(item, status);
       }
+
+      saveInventory();
+      
+      // Notification de succès
+      showToast(`Statut mis à jour : ${getStatusLabel(status)}`);
       
       // Recalcul des métriques après changement
       calculateMetrics();
     }
   };
   
+  
+  // New helper function to update box contents
+  const updateBoxContentsStatus = (box, status) => {
+    if (!box.contents) return;
+
+    // Update all items in the box to match the box's status
+    Object.values(box.contents).forEach(subsection => {
+      if (subsection.items) {
+        subsection.items.forEach(item => {
+          // Don't trigger the full updateItemStatus to avoid loops
+          item.status = status;
+          item.inTruck = status === STATUS.IN_TRUCK;
+        });
+      }
+    });
+  };
+
   // Obtenir une box par son ID
   const getBoxById = (boxId) => {
     let foundBox = null;
@@ -203,14 +219,20 @@ export function useInventory() {
   
   // Mettre à jour le statut d'une box en fonction de son contenu
   const updateBoxStatusFromContents = (box) => {
-    if (!box || !box.isBox) return;
-    
-    // Récupérer tous les éléments contenus dans la box
-    const contents = getAllBoxItems(box);
-    if (contents.length === 0) return;
+    if (!box || !box.contents) return;
+
+    const items = getAllBoxItems(box);
+    if (items.length === 0) return;
+
+      // Count items by status
+    const statusCounts = items.reduce((acc, item) => {
+      const status = item.status || 'null';
+      acc[status] = (acc[status] || 0) + 1;
+      return acc;
+    }, {});
     
     // Compter le statut de tous les contenus
-    const statusCounts = {
+    /*const statusCounts = {
       [STATUS.PRESENT]: 0,
       [STATUS.TO_FIND]: 0,
       [STATUS.TO_BUY]: 0,
@@ -218,18 +240,18 @@ export function useInventory() {
       [STATUS.NOT_NEEDED]: 0,
       [STATUS.IN_TRUCK]: 0,
       'null': 0  // Pour le statut null
-    };
-    
+    };*/
+    /*
     contents.forEach(item => {
       const status = item.status || 'null';
       statusCounts[status] = (statusCounts[status] || 0) + 1;
-    });
+    });*/
     
     // Déterminer le statut de la box en fonction du statut de son contenu
-    if (statusCounts[STATUS.IN_TRUCK] === contents.length) {
+    if (statusCounts[STATUS.IN_TRUCK] === items.length) {
       // Tous les éléments sont dans le camion - marquer la box comme dans le camion
       box.status = STATUS.IN_TRUCK;
-    } else if (statusCounts[STATUS.IN_TRUCK] + statusCounts[STATUS.PRESENT] === contents.length) {
+    } else if (statusCounts[STATUS.IN_TRUCK] + statusCounts[STATUS.PRESENT] === items.length) {
       // Tous les éléments sont présents ou dans le camion - marquer la box comme présente
       box.status = STATUS.PRESENT;
     } else if (statusCounts[STATUS.TO_FIND] > 0) {
@@ -246,7 +268,7 @@ export function useInventory() {
       box.status = null;
     } else {
       // Statuts mixtes ou cas spécial
-      if (statusCounts[STATUS.NOT_NEEDED] === contents.length) {
+      if (statusCounts[STATUS.NOT_NEEDED] === items.length) {
         // Tous les contenus ne sont pas nécessaires
         box.status = STATUS.NOT_NEEDED;
       } else {

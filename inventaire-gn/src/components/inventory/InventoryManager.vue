@@ -54,7 +54,6 @@
       @open-note="openNoteModal"
       @save="saveInventory"
       @mark-all-present="markAllBoxItemsPresent"
-      @mark-all-in-truck="markAllBoxItemsInTruck"
       @navigate-to-box="navigateToBox"
       @toggle-expand="toggleBoxExpand"
     />

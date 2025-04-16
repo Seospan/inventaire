@@ -1,18 +1,27 @@
 <!-- src/components/inventory/boxes/BoxExpandedView.vue -->
 <template>
-    <div>
-      <!-- Résumé des statuts et barre de progression -->
+  <!-- Status summary and progress -->
       <div class="mb-3 p-2 bg-gray-100 dark:bg-gray-700 rounded-md text-sm">
         <div class="flex justify-between items-center mb-2">
           <div class="font-medium">
-            {{ completedCount }}/{{ itemCount }} éléments vérifiés
+        {{ getBoxCompletedCount(box) }}/{{ getBoxItemCount(box) }} éléments vérifiés
           </div>
           <div>
-            {{ completionPercentage }}%
+        {{ getBoxCompletionPercentage(box) }}%
           </div>
         </div>
+
+        <!-- Add this near the box status display in BoxExpandedView.vue -->
+        <div class="flex items-center">
+        <span 
+            class="px-2 py-1 rounded-md text-sm text-white"
+            :class="getStatusClass(box.status)"
+        >
+            {{ getStatusLabel(box.status) }}
+        </span>
+        </div>
         
-        <!-- Actions de groupe pour la box -->
+    <!-- Box group actions -->
         <div class="flex flex-wrap gap-2">
           <button 
             @click.stop="$emit('mark-all-present', box.boxId)" 
@@ -23,27 +32,45 @@
         </div>
       </div>
       
-      <!-- Content sections -->
+  <!-- Box content sections -->
       <BoxContentSections 
         :contents="box.contents"
-        v-bind="$props"
-        v-on="$listeners"
+        :activeStatusDropdown="activeStatusDropdown"
+        :getStatusClass="getStatusClass"
+        :getStatusLabel="getStatusLabel"
+        :statusOptions="statusOptions"
+        @mark-present="$emit('mark-present', $event)"
+        @open-note="$emit('open-note', $event)"
+        @toggle-status="$emit('toggle-status', $event)"
+        @update-status="$emit('update-status', $event)"
+        @save="$emit('save')"
+        @toggle-expand="$emit('toggle-expand', $event)"
       />
-    </div>
   </template>
   
   <script setup>
-  import { computed } from 'vue';
-  import { useBoxManagement } from '../../../composables/useBoxManagement';
   import BoxContentSections from './BoxContentSections.vue';
+  import { useBoxCalculations } from '../../../composables/useBoxCalculations';
   
   const props = defineProps({
-    box: Object
+    box: Object,
+    activeStatusDropdown: Object,
+    getStatusClass: Function,
+    getStatusLabel: Function, // Add this
+    statusOptions: Object
   });
   
-  const { getBoxItemCount, getBoxCompletedCount, getBoxCompletionPercentage } = useBoxManagement();
-  
-  const itemCount = computed(() => getBoxItemCount(props.box));
-  const completedCount = computed(() => getBoxCompletedCount(props.box));
-  const completionPercentage = computed(() => getBoxCompletionPercentage(props.box));
-  </script>
+// Get box calculation functions from composable
+const { getBoxCompletedCount, getBoxItemCount, getBoxCompletionPercentage } = useBoxCalculations();
+
+// Explicitly declare all emits
+defineEmits([
+  'mark-all-present',
+  'mark-present',
+  'open-note',
+  'toggle-status',
+  'update-status',
+  'save',
+  'toggle-expand'
+]);
+</script>

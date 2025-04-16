@@ -1,25 +1,20 @@
 <!-- src/components/inventory/boxes/BoxCollapsedView.vue -->
 <template>
-    <div class="text-xs text-gray-500 dark:text-gray-400 flex justify-between items-center">
-      <span>{{ itemCount }} élément(s) dans cette box</span>
-    </div>
     <div class="flex flex-wrap gap-1 mt-1">
       <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs bg-status-present text-white">
-        {{ completedCount }}/{{ itemCount }} vérifiés
+        {{ getBoxCompletedCount(box) }}/{{ getBoxItemCount(box) }} vérifiés
       </span>
     </div>
   </template>
   
   <script setup>
-  import { computed } from 'vue';
-  import { useBoxManagement } from '../../../composables/useBoxManagement';
-  
+  import { useBoxCalculations } from '../../../composables/useBoxCalculations';
+
   const props = defineProps({
-    box: Object
+    box: Object,
   });
-  
-  const { getBoxItemCount, getBoxCompletedCount } = useBoxManagement();
-  
-  const itemCount = computed(() => getBoxItemCount(props.box));
-  const completedCount = computed(() => getBoxCompletedCount(props.box));
+
+  const { getBoxCompletedCount, getBoxItemCount } = useBoxCalculations();
+
+  defineEmits(['toggle']);
   </script>

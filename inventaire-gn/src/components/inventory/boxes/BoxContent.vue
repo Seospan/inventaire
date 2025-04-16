@@ -7,8 +7,17 @@
     >
       <BoxExpandedView 
         :box="box"
-        v-bind="$props"
-        v-on="$listeners"
+        :activeStatusDropdown="activeStatusDropdown"
+        :getStatusClass="getStatusClass"
+        :getStatusLabel="getStatusLabel"
+        :statusOptions="statusOptions"
+        @mark-all-present="$emit('mark-all-present', $event)"
+        @mark-present="$emit('mark-present', $event)"
+        @open-note="$emit('open-note', $event)"
+        @toggle-status="$emit('toggle-status', $event)"
+        @update-status="$emit('update-status', $event)"
+        @save="$emit('save')"
+        @toggle-expand="$emit('toggle-expand', $event)"
       />
     </div>
     <div 
@@ -18,7 +27,6 @@
       <BoxCollapsedView 
         :box="box"
         @toggle="$emit('toggle-expand', box.boxId)"
-        v-bind="$props"
       />
     </div>
   </div>
@@ -27,15 +35,35 @@
 <script setup>
 import { computed } from 'vue';
 import { useBoxManagement } from '../../../composables/useBoxManagement';
+import { useBoxCalculations } from '../../../composables/useBoxCalculations';
 import BoxExpandedView from './BoxExpandedView.vue';
 import BoxCollapsedView from './BoxCollapsedView.vue';
 
 const props = defineProps({
   box: Object,
-  expanded: Boolean
+  expanded: Boolean,
+  activeStatusDropdown: Object,
+  getStatusClass: Function,
+  getStatusLabel: Function,
+  statusOptions: Object,
+  getBoxCompletedCount: Function,
+  getBoxItemCount: Function,
+  getBoxCompletionPercentage: Function
 });
 
+defineEmits([
+  'mark-all-present',
+  'mark-present',
+  'open-note',
+  'toggle-status',
+  'update-status',
+  'save',
+  'toggle-expand'
+]);
+
 const { hasBoxContents } = useBoxManagement();
+
+const { getBoxCompletedCount, getBoxItemCount, getBoxCompletionPercentage } = useBoxCalculations();
 
 const isValidBox = computed(() => 
   props.box && props.box.isBox && props.box.contents && hasBoxContents(props.box)
